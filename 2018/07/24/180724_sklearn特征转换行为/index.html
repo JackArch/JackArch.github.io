@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="特征工程,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1 为什么要记录特征转换行为？　　使用机器学习算法和模型进行数据挖掘，有时难免事与愿违：我们依仗对业务的理解，对数据的分析，以及工作经验提出了一些特征，但是在模型训练完成后，某些特征可能“身微言轻”——我们认为相关性高的特征并不重要，这时我们便要反思这样的特征提出是否合理；某些特征甚至“南辕北辙”——我们认为正相关的特征结果变成了负相关，造成这种情况很有可能是抽样与整体不相符，模型过于复杂，导致了">
+<meta name="keywords" content="特征工程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sklearn特征转换行为">
+<meta property="og:url" content="http://JackArch.github.io/2018/07/24/180724_sklearn特征转换行为/index.html">
+<meta property="og:site_name" content="Deep  |  Mind">
+<meta property="og:description" content="1 为什么要记录特征转换行为？　　使用机器学习算法和模型进行数据挖掘，有时难免事与愿违：我们依仗对业务的理解，对数据的分析，以及工作经验提出了一些特征，但是在模型训练完成后，某些特征可能“身微言轻”——我们认为相关性高的特征并不重要，这时我们便要反思这样的特征提出是否合理；某些特征甚至“南辕北辙”——我们认为正相关的特征结果变成了负相关，造成这种情况很有可能是抽样与整体不相符，模型过于复杂，导致了">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://jackarch.github.io/2018/07/24/180724_sklearn特征转换行为/pic/180709.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2018/07/24/180724_sklearn特征转换行为/pic/180710.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2018/07/24/180724_sklearn特征转换行为/pic/180711.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2018/07/24/180724_sklearn特征转换行为/pic/180712.jpg">
+<meta property="og:updated_time" content="2019-06-19T09:38:12.274Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sklearn特征转换行为">
+<meta name="twitter:description" content="1 为什么要记录特征转换行为？　　使用机器学习算法和模型进行数据挖掘，有时难免事与愿违：我们依仗对业务的理解，对数据的分析，以及工作经验提出了一些特征，但是在模型训练完成后，某些特征可能“身微言轻”——我们认为相关性高的特征并不重要，这时我们便要反思这样的特征提出是否合理；某些特征甚至“南辕北辙”——我们认为正相关的特征结果变成了负相关，造成这种情况很有可能是抽样与整体不相符，模型过于复杂，导致了">
+<meta name="twitter:image" content="http://jackarch.github.io/2018/07/24/180724_sklearn特征转换行为/pic/180709.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://JackArch.github.io/2018/07/24/180724_sklearn特征转换行为/">
+
+
+
+
+
+  <title>sklearn特征转换行为 | Deep  |  Mind</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep  |  Mind</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://JackArch.github.io/2018/07/24/180724_sklearn特征转换行为/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhuangzhouzhishui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep  |  Mind">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sklearn特征转换行为</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-24T11:43:28+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-为什么要记录特征转换行为？"><a href="#1-为什么要记录特征转换行为？" class="headerlink" title="1 为什么要记录特征转换行为？"></a>1 为什么要记录特征转换行为？</h1><p>　　使用机器学习算法和模型进行数据挖掘，有时难免事与愿违：我们依仗对业务的理解，对数据的分析，以及工作经验提出了一些特征，但是在模型训练完成后，某些特征可能“身微言轻”——我们认为相关性高的特征并不重要，这时我们便要反思这样的特征提出是否合理；某些特征甚至“南辕北辙”——我们认为正相关的特征结果变成了负相关，造成这种情况很有可能是抽样与整体不相符，模型过于复杂，导致了过拟合。然而，我们怎么判断先前的假设和最后的结果之间的差异呢？</p>
+<p>　　线性模型通常有含有属性coef_，当系数值大于0时为正相关，当系数值小于0时为负相关；另外一些模型含有属性feature_importances_，顾名思义，表示特征的重要性。根据以上两个属性，便可以与先前假设中的特征的相关性（或重要性）进行对比了。但是，理想是丰满的，现实是骨感的。经过复杂的特征转换之后，特征矩阵X已不再是原来的样子：哑变量使特征变多了，特征选择使特征变少了，降维使特征映射到另一个维度中。</p>
+<p>　　累觉不爱了吗？如果，我们能够将最后的特征与原特征对应起来，那么分析特征的系数和重要性又有了意义了。所以，在训练过程（或者转换过程）中，记录下所有特征转换行为是一个有意义的工作。可惜，sklearn暂时并没有提供这样的功能。在这篇博文中，我们尝试对一些常见的转换功能进行行为记录，读者可以在此基础进行进一步的拓展。</p>
+<hr>
+<h1 id="2-有哪些特征转换的方式？"><a href="#2-有哪些特征转换的方式？" class="headerlink" title="2 有哪些特征转换的方式？"></a>2 有哪些特征转换的方式？</h1><p>　　<a href="http://www.cnblogs.com/jasonfreak/p/5448385.html" target="_blank" rel="noopener">《使用sklearn做单机特征工程》</a>一文概括了若干常见的转换功能：</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>StandardScaler</td>
+<td>数据预处理（无量纲化）</td>
+<td>标准化，基于特征矩阵的列，将特征值转换至服从标准正态分布</td>
+</tr>
+<tr>
+<td>MinMaxScaler</td>
+<td>数据预处理（无量纲化）</td>
+<td>区间缩放，基于最大最小值，将特征值转换到[0, 1]区间上</td>
+</tr>
+<tr>
+<td>Normalizer</td>
+<td>数据预处理（归一化）</td>
+<td>基于特征矩阵的行，将样本向量转换为“单位向量”</td>
+</tr>
+<tr>
+<td>Binarizer</td>
+<td>数据预处理（二值化）</td>
+<td>基于给定阈值，将定量特征按阈值划分</td>
+</tr>
+<tr>
+<td>OneHotEncoder</td>
+<td>数据预处理（哑编码）</td>
+<td>将定性数据编码为定量数据</td>
+</tr>
+<tr>
+<td>Imputer</td>
+<td>数据预处理（缺失值计算）</td>
+<td>计算缺失值，缺失值可填充为均值等</td>
+</tr>
+<tr>
+<td>PolynomialFeatures</td>
+<td>数据预处理（多项式数据转换）</td>
+<td>多项式数据转换</td>
+</tr>
+<tr>
+<td>FunctionTransformer</td>
+<td>数据预处理（自定义单元数据转换）</td>
+<td>使用单变元的函数来转换数据</td>
+</tr>
+<tr>
+<td>VarianceThreshold</td>
+<td>特征选择（Filter）</td>
+<td>方差选择法</td>
+</tr>
+<tr>
+<td>SelectKBest</td>
+<td>特征选择（Filter）</td>
+<td>可选关联系数、卡方校验、最大信息系数作为得分计算的方法</td>
+</tr>
+<tr>
+<td>RFE</td>
+<td>特征选择（Wrapper）</td>
+<td>递归地训练基模型，将权值系数较小的特征从特征集合中消除</td>
+</tr>
+<tr>
+<td>SelectFromModel</td>
+<td>特征选择（Embedded）</td>
+<td>训练基模型，选择权值系数较高的特征</td>
+</tr>
+<tr>
+<td>PCA</td>
+<td>降维（无监督）</td>
+<td>主成分分析法</td>
+</tr>
+<tr>
+<td>LDA</td>
+<td>降维（有监督）</td>
+<td>线性判别分析法</td>
+</tr>
+</tbody></table>
+<p>　　按照特征数量是否发生变化，这些转换类可分为：</p>
+<ul>
+<li>无变化：StandardScaler，MinMaxScaler，Normalizer，Binarizer，Imputer，FunctionTransformer*</li>
+<li>有变化：OneHotEncoder，PolynomialFeatures，VarianceThreshold，SelectKBest，RFE，SelectFromModel，PCA，LDA</li>
+</ul>
+<p>FunctionTransformer*：自定义的转换函数通常不会使特征数量发生变化</p>
+<p>　　对于不造成特征数量变化的转换类，我们只需要保持特征不变即可。在此，我们主要研究那些有变化的转换类，其他转换类都默认为无变化。按照映射的形式，可将以上有变化的转换类可分为：</p>
+<ul>
+<li>一对一：VarianceThreshold，SelectKBest，RFE，SelectFromModel</li>
+<li>一对多：OneHotEncoder</li>
+<li>多对多：PolynomialFeatures，PCA，LDA</li>
+</ul>
+<p>　　原特征与新特征为一对一映射通常发生在特征选择时，若原特征被选择则直接变成新特征，否则抛弃。哑编码为典型的一对多映射，需要哑编码的原特征将会转换为多个新特征。多对多的映射中PolynomialFeatures并不要求每一个新特征都与原特征建立映射关系，例如阶为2的多项式转换，第一个新特征只由第一个原特征生成（平方）。降维的本质在于将原特征矩阵X映射到维度更低的空间中，使用的技术通常是矩阵乘法，所以它既要求每一个原特征映射到所有新特征，同时也要求每一个新特征被所有原特征映射。</p>
+<hr>
+<h1 id="3-特征转换的组合"><a href="#3-特征转换的组合" class="headerlink" title="3 特征转换的组合"></a>3 特征转换的组合</h1><p>　　在<a href="http://www.cnblogs.com/jasonfreak/p/5448462.html" target="_blank" rel="noopener">《使用sklearn优雅地进行数据挖掘》</a>一文中，我们看到一个基本的数据挖掘场景：</p>
+<p><img src="./pic/180709.jpg" alt="img"></p>
+<p>　　特征转换行为通常是流水线型和并行型结合的。所以，我们考虑重新设计流水线处理类Pipeline和并行处理类FeatureUnion，使其能够根据不同的特征转换类，记录下转换行为“日志”。“日志”的表示形式也是重要的，由上图可知，集成后的特征转换过程呈现无环网状，故使用网络来描述“日志”是合适的。在网络中，节点表示特征，有向连线表示特征转换。</p>
+<p>　　为此，我们新增两个类型Feature和Transfrom来构造网络结构，Feature类型表示网络中的节点，Transform表示网络中的有向边。python的networkx库可以很好地表述网络和操作网络，我这是要重新造轮子吗？其实并不是，现在考虑代表新特征的节点怎么命名的问题，显然，不能与网络中任意节点同名，否则会发生混淆。然而，由于sklearn的训练过程存在并行过程（线程），直接使用network来构造网络的话，将难以处理节点重复命名的问题。所以，我才新增两个新的类型来描述网络结构，这时网络中的节点名是可以重复的。最后，对这网络进行广度遍历，生成基于networkx库的网络，因为这个过程是串行的，故可以使用“当前节点数”作为新增节点的序号了。这两个类的代码（feature.py）设计如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> 1 import numpy as np</span><br><span class="line"> 2 </span><br><span class="line"> 3 class Transform(object):</span><br><span class="line"> 4     def __init__(self, label, feature):</span><br><span class="line"> 5         super(Transform, self).__init__()</span><br><span class="line"> 6         #边标签名，使用networkx等库画图时将用到</span><br><span class="line"> 7         self.label = label</span><br><span class="line"> 8         #该边指向的节点</span><br><span class="line"> 9         self.feature = feature</span><br><span class="line">10 </span><br><span class="line">11 class Feature(object):</span><br><span class="line">12     def __init__(self, name):</span><br><span class="line">13         super(Feature, self).__init__()</span><br><span class="line">14         #节点名称，该名称在网络中不唯一，在某些映射中，该名称需要直接传给新特征</span><br><span class="line">15         self.name = name</span><br><span class="line">16         #节点标签名，该名称在网络中唯一，使用networkx等库画图时将用到</span><br><span class="line">17         self.label = &apos;%s[%d]&apos; % (self.name, id(self))</span><br><span class="line">18         #从本节点发出的有向边列表</span><br><span class="line">19         self.transformList = np.array([])</span><br><span class="line">20 </span><br><span class="line">21     #建立从self到feature的有向边</span><br><span class="line">22     def transform(self, label, feature):</span><br><span class="line">23         self.transformList = np.append(self.transformList, Transform(label, feature))</span><br><span class="line">24 </span><br><span class="line">25     #深度遍历输出以本节点为源节点的网络</span><br><span class="line">26     def printTree(self):</span><br><span class="line">27         print self.label</span><br><span class="line">28         for transform in self.transformList:</span><br><span class="line">29             feature = transform.feature</span><br><span class="line">30             print &apos;--%s--&gt;&apos; % transform.label,</span><br><span class="line">31             feature.printTree()</span><br><span class="line">32 </span><br><span class="line">33     def __str__(self):</span><br><span class="line">34         return self.label</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-sklearn源码分析"><a href="#4-sklearn源码分析" class="headerlink" title="4 sklearn源码分析"></a>4 sklearn源码分析</h1><p>　　我们可以统一地记录不改变特征数量的转换行为：在“日志”网络中，从代表原特征的节点，引伸出连线连上唯一的代表新特征的节点。然而，对于改变特征数量的转换行为来说，需要针对每个转换类编写不同的“日志”记录（网络生成）代码。为不改变特征数量的转换行为设计代码（default.py）如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> 1 import numpy as np</span><br><span class="line"> 2 from feature import Feature</span><br><span class="line"> 3 </span><br><span class="line"> 4 def doWithDefault(model, featureList):</span><br><span class="line"> 5     leaves = np.array([])</span><br><span class="line"> 6 </span><br><span class="line"> 7     n_features = len(featureList)</span><br><span class="line"> 8     </span><br><span class="line"> 9     #为每一个输入的原节点，新建一个新节点，并建立映射</span><br><span class="line">10     for i in range(n_features):</span><br><span class="line">11         feature = featureList[i]</span><br><span class="line">12         newFeature = Feature(feature.name)</span><br><span class="line">13         feature.transform(model.__class__.__name__, newFeature)</span><br><span class="line">14         leaves = np.append(leaves, newFeature)</span><br><span class="line">15 </span><br><span class="line">16     #返回新节点列表，之所以该变量取名叫leaves，是因为其是网络的边缘节点</span><br><span class="line">17     return leaves</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-1-一对一映射"><a href="#4-1-一对一映射" class="headerlink" title="4.1 一对一映射"></a>4.1 一对一映射</h2><p>　　映射形式为一对一时，转换类通常为特征选择类。在这种映射下，原特征要么只转化为一个新特征，要么不转化。通过分析sklearn源码不难发现，特征选择类都混入了特质sklearn.feature_selection.base.SelectorMixin，因此这些类都有方法get_support来获取哪些特征转换信息：</p>
+<p>　　所以，在设计“日志”记录模块时，判断转换类是否混入了该特征，若是则直接调用get_support方法来得到被筛选的特征的掩码或者下标，如此我们便可从被筛选的特征引伸出连线连上新特征。为此，我们设计代码（one2one.py）如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> 1 import numpy as np</span><br><span class="line"> 2 from sklearn.feature_selection.base import SelectorMixin</span><br><span class="line"> 3 from feature import Feature</span><br><span class="line"> 4 </span><br><span class="line"> 5 def doWithSelector(model, featureList):</span><br><span class="line"> 6     assert(isinstance(model, SelectorMixin))</span><br><span class="line"> 7 </span><br><span class="line"> 8     leaves = np.array([])</span><br><span class="line"> 9 </span><br><span class="line">10     n_features = len(featureList)</span><br><span class="line">11     </span><br><span class="line">12     #新节点的掩码</span><br><span class="line">13     mask_features = model.get_support()</span><br><span class="line">14 </span><br><span class="line">15     for i in range(n_features):</span><br><span class="line">16         feature = featureList[i]</span><br><span class="line">17         #原节点被选择，生成新节点，并建立映射</span><br><span class="line">18         if mask_features[i]:</span><br><span class="line">19             newFeature = Feature(feature.name)</span><br><span class="line">20             feature.transform(model.__class__.__name__, newFeature)</span><br><span class="line">21             leaves = np.append(leaves, newFeature)</span><br><span class="line">22         #原节点被抛弃，生成一个名为Abandomed的新节点，建立映射，但是这个特征不加入下一步继续生长的节点列表</span><br><span class="line">23         else:</span><br><span class="line">24             newFeature = Feature(&apos;Abandomed&apos;)</span><br><span class="line">25             feature.transform(model.__class__.__name__, newFeature)</span><br><span class="line">26 </span><br><span class="line">27     return leaves</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-2-一对多映射"><a href="#4-2-一对多映射" class="headerlink" title="4.2 一对多映射"></a>4.2 一对多映射</h2><p>　　OneHotEncoder是典型的一对多映射转换类，其提供了两个属性结合两个参数来表示转换信息：</p>
+<ul>
+<li>n_values：定性特征的值数量，若为auto则直接从训练集中获取，若为整数则表示所有定性特征的值数量+1，若为数组则分别表示每个定性特征的数量+1</li>
+<li>categorical_features：定性特征的掩码或下标</li>
+<li>active_features_：有效值（在n_values为auto时有用），假设A属性取值范围为（1，2，3），但是实际上训练样本中只有（1，2），假设B属性取值范围为（2，3，4），训练样本中只有（2，4），那么有效值为（1，2，5，7）。是不是感到奇怪了，为什么有效值不是（1，2，2，4）？OneHotEncoder在这里做了巧妙的设计：有效值被转换成了一个递增的序列，这样方便于配合属性n_features快速地算出每个原特征转换成了哪些新特征，转换依据的真实有效值是什么。</li>
+<li>feature_indices_：每个定性特征的有效值范围，例如第i个定性特征，其有效值范围为feature_indices_[i]至feature_indices_[i+1]，<a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" target="_blank" rel="noopener">sklearn官方文档</a>在此描述有误，该数组的长度应为n_features+1。在上例中，feature_indices_等于（0，3，8）。故下标为0的定性特征，其有效值范围为大于0小于3，则有效值为1和2；下标为1的定性特征，其有效值范围为大于3小于8，则有效值为5和7。下标为0的定性特征，其两个真实有效值为1-0=1和2-0=2；下标为1的定性特征，其两个真实有效值为5-3=2和7-3=4。这样一来就可以得到（1，2，2，4）的真实有效值了。</li>
+</ul>
+<p>　　综上，我们设计处理OneHotEncoder类的代码（one2many.py）如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"> 1 import numpy as np</span><br><span class="line"> 2 from sklearn.preprocessing import OneHotEncoder</span><br><span class="line"> 3 from feature import Feature</span><br><span class="line"> 4 </span><br><span class="line"> 5 def doWithOneHotEncoder(model, featureList):</span><br><span class="line"> 6     assert(isinstance(model, OneHotEncoder))</span><br><span class="line"> 7     assert(hasattr(model, &apos;feature_indices_&apos;))</span><br><span class="line"> 8 </span><br><span class="line"> 9     leaves = np.array([])</span><br><span class="line">10 </span><br><span class="line">11     n_features = len(featureList)</span><br><span class="line">12     </span><br><span class="line">13     #定性特征的掩码</span><br><span class="line">14     if model.categorical_features == &apos;all&apos;:</span><br><span class="line">15         mask_features = np.ones(n_features)</span><br><span class="line">16     else:</span><br><span class="line">17         mask_features = np.zeros(n_features)</span><br><span class="line">18         mask_features[self.categorical_features] = 1</span><br><span class="line">19 </span><br><span class="line">20     #定性特征的数量</span><br><span class="line">21     n_qualitativeFeatures = len(model.feature_indices_) - 1</span><br><span class="line">22     #如果定性特征的取值个数是自动的，即从训练数据中生成</span><br><span class="line">23     if model.n_values == &apos;auto&apos;:</span><br><span class="line">24         #定性特征的有效取值列表</span><br><span class="line">25         n_activeFeatures = len(model.active_features_)</span><br><span class="line">26     #变量j为定性特征的下标，变量k为有效值的下标</span><br><span class="line">27     j = k = 0</span><br><span class="line">28     for i in range(n_features):</span><br><span class="line">29         feature = featureList[i]</span><br><span class="line">30         #如果是定性特征</span><br><span class="line">31         if mask_features[i]:</span><br><span class="line">32             if model.n_values == &apos;auto&apos;:</span><br><span class="line">33                 #为属于第j个定性特征的每个有效值生成一个新节点，建立映射关系</span><br><span class="line">34                 while k &lt; n_activeFeatures and model.active_features_[k] &lt; model.feature_indices_[j+1]:</span><br><span class="line">35                     newFeature = Feature(feature.name)</span><br><span class="line">36                     feature.transform(&apos;%s[%d]&apos; % (model.__class__.__name__, model.active_features_[k] - model.feature_indices_[j]), newFeature)</span><br><span class="line">37                     leaves = np.append(leaves, newFeature)</span><br><span class="line">38                     k += 1</span><br><span class="line">39             else:</span><br><span class="line">40                 #为属于第j个定性特征的每个有效值生成一个新节点，建立映射关系</span><br><span class="line">41                 for k in range(model.feature_indices_[j]+1, model.feature_indices_[j+1]):</span><br><span class="line">42                     newFeature = Feature(feature.name)</span><br><span class="line">43                     feature.transform(&apos;%s[%d]&apos; % (model.__class__.__name__, k - model.feature_indices_[j]), newFeature)</span><br><span class="line">44                     leaves = np.append(leaves, newFeature)</span><br><span class="line">45             j += 1</span><br><span class="line">46         #如果不是定性特征，则直接根据原节点生成新节点</span><br><span class="line">47         else:</span><br><span class="line">48             newFeature = Feature(feature.name)</span><br><span class="line">49             feature.transform(&apos;%s[r]&apos; % model.__class__.__name__, newFeature)</span><br><span class="line">50             leaves = append(leaves, newFeatures)</span><br><span class="line">51 </span><br><span class="line">52     return leaves</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-3-多对多映射"><a href="#4-3-多对多映射" class="headerlink" title="4.3 多对多映射"></a>4.3 多对多映射</h2><p>　　PCA类是典型的多对多映射的转换类，其提供了参数n_components_来表示转换后新特征的个数。之前说过降维的转换类，其既要求每一个原特征映射到所有新特征，也要求每一个新特征被所有原特征映射。故，我们设计处理PCA类的代码（many2many.py）如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> 1 import numpy as np</span><br><span class="line"> 2 from sklearn.decomposition import PCA</span><br><span class="line"> 3 from feature import Feature</span><br><span class="line"> 4 </span><br><span class="line"> 5 def doWithPCA(model, featureList):</span><br><span class="line"> 6     leaves = np.array([])</span><br><span class="line"> 7 </span><br><span class="line"> 8     n_features = len(featureList)</span><br><span class="line"> 9     </span><br><span class="line">10     #按照主成分数生成新节点</span><br><span class="line">11     for i in range(model.n_components_):</span><br><span class="line">12         newFeature = Feature(model.__class__.__name__)</span><br><span class="line">13         leaves = np.append(leaves, newFeature)</span><br><span class="line">14 </span><br><span class="line">15     #为每一个原节点与每一个新节点建立映射</span><br><span class="line">16     for i in range(n_features):</span><br><span class="line">17         feature = featureList[i]</span><br><span class="line">18         for j in range(model.n_components_):</span><br><span class="line">19             newFeature = leaves[j]</span><br><span class="line">20             feature.transform(model.__class__.__name__, newFeature)</span><br><span class="line">21 </span><br><span class="line">22     return leaves</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-实践"><a href="#5-实践" class="headerlink" title="5 实践"></a>5 实践</h1><p>　　到此，我们可以专注改进流水线处理和并行处理的模块了。为了不破坏Pipeline类和FeatureUnion类的核心功能，我们分别派生出两个类PipelineExt和FeatureUnionExt。其次，为这两个类增加私有方法getFeatureList，这个方法有只有一个参数featureList表示输入流水线处理或并行处理的特征列表（元素为feature.Feature类的对象），输出经过流水线处理或并行处理后的特征列表。设计内部方法_doWithModel，其被getFeatureList方法调用，其提供了一个公共的入口，将根据流水线上或者并行中的转换类的不同，具体调用不同的处理方法（这些不同的处理方法在one2one.py，one2many.py，many2many.py中定义）。在者，我们还需要一个initRoot方法来初始化网络结构，返回一个根节点。最后，我们尝试用networkx库读取自定义的网络结构，基于matplotlib的对网络进行图形化显示。以上部分的代码（ple.py）如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">  1 from sklearn.feature_selection.base import SelectorMixin</span><br><span class="line">  2 from sklearn.preprocessing import OneHotEncoder</span><br><span class="line">  3 from sklearn.decomposition import PCA</span><br><span class="line">  4 from sklearn.pipeline import Pipeline, FeatureUnion, _fit_one_transformer, _fit_transform_one, _transform_one </span><br><span class="line">  5 from sklearn.externals.joblib import Parallel, delayed</span><br><span class="line">  6 from scipy import sparse</span><br><span class="line">  7 import numpy as np</span><br><span class="line">  8 import networkx as nx</span><br><span class="line">  9 from matplotlib import pyplot as plt</span><br><span class="line"> 10 from default import doWithDefault</span><br><span class="line"> 11 from one2one import doWithSelector</span><br><span class="line"> 12 from one2many import doWithOneHotEncoder</span><br><span class="line"> 13 from many2many import doWithPCA</span><br><span class="line"> 14 from feature import Feature</span><br><span class="line"> 15 </span><br><span class="line"> 16 #派生Pipeline类</span><br><span class="line"> 17 class PipelineExt(Pipeline):</span><br><span class="line"> 18     def _pre_get_featues(self, featureList):</span><br><span class="line"> 19         leaves = featureList</span><br><span class="line"> 20         for name, transform in self.steps[:-1]:</span><br><span class="line"> 21             leaves = _doWithModel(transform, leaves)</span><br><span class="line"> 22         return leaves</span><br><span class="line"> 23 </span><br><span class="line"> 24     #定义getFeatureList方法</span><br><span class="line"> 25     def getFeatureList(self, featureList):</span><br><span class="line"> 26         leaves = self._pre_get_featues(featureList)</span><br><span class="line"> 27         model = self.steps[-1][-1]</span><br><span class="line"> 28         if hasattr(model, &apos;fit_transform&apos;) or hasattr(model, &apos;transform&apos;):</span><br><span class="line"> 29             leaves = _doWithModel(model, leaves)</span><br><span class="line"> 30         return leaves</span><br><span class="line"> 31 </span><br><span class="line"> 32 #派生FeatureUnion类，该类不仅记录了转换行为，同时也支持部分数据处理</span><br><span class="line"> 33 class FeatureUnionExt(FeatureUnion):</span><br><span class="line"> 34     def __init__(self, transformer_list, idx_list, n_jobs=1, transformer_weights=None):</span><br><span class="line"> 35         self.idx_list = idx_list</span><br><span class="line"> 36         FeatureUnion.__init__(self, transformer_list=map(lambda trans:(trans[0], trans[1]), transformer_list), n_jobs=n_jobs, transformer_weights=transformer_weights)</span><br><span class="line"> 37 </span><br><span class="line"> 38     def fit(self, X, y=None):</span><br><span class="line"> 39         transformer_idx_list = map(lambda trans, idx:(trans[0], trans[1], idx), self.transformer_list, self.idx_list)</span><br><span class="line"> 40         transformers = Parallel(n_jobs=self.n_jobs)(</span><br><span class="line"> 41             delayed(_fit_one_transformer)(trans, X[:,idx], y)</span><br><span class="line"> 42             for name, trans, idx in transformer_idx_list)</span><br><span class="line"> 43         self._update_transformer_list(transformers)</span><br><span class="line"> 44         return self</span><br><span class="line"> 45 </span><br><span class="line"> 46     def fit_transform(self, X, y=None, **fit_params):</span><br><span class="line"> 47         transformer_idx_list = map(lambda trans, idx:(trans[0], trans[1], idx), self.transformer_list, self.idx_list)</span><br><span class="line"> 48         result = Parallel(n_jobs=self.n_jobs)(</span><br><span class="line"> 49             delayed(_fit_transform_one)(trans, name, X[:,idx], y,</span><br><span class="line"> 50                                         self.transformer_weights, **fit_params)</span><br><span class="line"> 51             for name, trans, idx in transformer_idx_list)</span><br><span class="line"> 52 </span><br><span class="line"> 53         Xs, transformers = zip(*result)</span><br><span class="line"> 54         self._update_transformer_list(transformers)</span><br><span class="line"> 55         if any(sparse.issparse(f) for f in Xs):</span><br><span class="line"> 56             Xs = sparse.hstack(Xs).tocsr()</span><br><span class="line"> 57         else:</span><br><span class="line"> 58             Xs = np.hstack(Xs)</span><br><span class="line"> 59         return Xs</span><br><span class="line"> 60 </span><br><span class="line"> 61     def transform(self, X):</span><br><span class="line"> 62         transformer_idx_list = map(lambda trans, idx:(trans[0], trans[1], idx), self.transformer_list, self.idx_list)</span><br><span class="line"> 63         Xs = Parallel(n_jobs=self.n_jobs)(</span><br><span class="line"> 64             delayed(_transform_one)(trans, name, X[:,idx], self.transformer_weights)</span><br><span class="line"> 65             for name, trans, idx in transformer_idx_list)</span><br><span class="line"> 66         if any(sparse.issparse(f) for f in Xs):</span><br><span class="line"> 67             Xs = sparse.hstack(Xs).tocsr()</span><br><span class="line"> 68         else:</span><br><span class="line"> 69             Xs = np.hstack(Xs)</span><br><span class="line"> 70         return Xs</span><br><span class="line"> 71 </span><br><span class="line"> 72     #定义getFeatureList方法</span><br><span class="line"> 73     def getFeatureList(self, featureList):</span><br><span class="line"> 74         transformer_idx_list = map(lambda trans, idx:(trans[0], trans[1], idx), self.transformer_list, self.idx_list)</span><br><span class="line"> 75         leaves = np.array(Parallel(n_jobs=self.n_jobs)(</span><br><span class="line"> 76             delayed(_doWithModel)(trans, featureList[idx])</span><br><span class="line"> 77             for name, trans, idx in transformer_idx_list))</span><br><span class="line"> 78         leaves = np.hstack(leaves)</span><br><span class="line"> 79         return leaves</span><br><span class="line"> 80 </span><br><span class="line"> 81 #定义为每个模型进行转换记录的总入口方法，该方法将根据不同的转换类调用不同的处理方法</span><br><span class="line"> 82 def _doWithModel(model, featureList):</span><br><span class="line"> 83     if isinstance(model, SelectorMixin):</span><br><span class="line"> 84         return doWithSelector(model, featureList)</span><br><span class="line"> 85     elif isinstance(model, OneHotEncoder):</span><br><span class="line"> 86         return doWithOneHotEncoder(model, featureList)</span><br><span class="line"> 87     elif isinstance(model, PCA):</span><br><span class="line"> 88         return doWithPCA(model, featureList)</span><br><span class="line"> 89     elif isinstance(model, FeatureUnionExt) or isinstance(model, PipelineExt):</span><br><span class="line"> 90         return model.getFeatureList(featureList)</span><br><span class="line"> 91     else:</span><br><span class="line"> 92         return doWithDefault(model, featureList)</span><br><span class="line"> 93 </span><br><span class="line"> 94 #初始化网络的根节点，输入参数为原始特征的名称</span><br><span class="line"> 95 def initRoot(featureNameList):</span><br><span class="line"> 96     root = Feature(&apos;root&apos;)</span><br><span class="line"> 97     for featureName in featureNameList:</span><br><span class="line"> 98         newFeature = Feature(featureName)</span><br><span class="line"> 99         root.transform(&apos;init&apos;, newFeature)</span><br><span class="line">100     return root</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们需要验证一下成果了，不妨继续使用博文<a href="http://www.cnblogs.com/jasonfreak/p/5448462.html" target="_blank" rel="noopener">《使用sklearn优雅地进行数据挖掘》</a>中提供的场景来进行测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"> 1 import numpy as np</span><br><span class="line"> 2 from sklearn.datasets import load_iris</span><br><span class="line"> 3 from sklearn.preprocessing import Imputer</span><br><span class="line"> 4 from sklearn.preprocessing import OneHotEncoder</span><br><span class="line"> 5 from sklearn.preprocessing import FunctionTransformer</span><br><span class="line"> 6 from sklearn.preprocessing import Binarizer</span><br><span class="line"> 7 from sklearn.preprocessing import MinMaxScaler</span><br><span class="line"> 8 from sklearn.feature_selection import SelectKBest</span><br><span class="line"> 9 from sklearn.feature_selection import chi2</span><br><span class="line">10 from sklearn.decomposition import PCA</span><br><span class="line">11 from sklearn.linear_model import LogisticRegression</span><br><span class="line">12 from sklearn.pipeline import Pipeline, FeatureUnion</span><br><span class="line">13 from ple import PipelineExt, FeatureUnionExt, initRoot</span><br><span class="line">14 </span><br><span class="line">15 def datamining(iris, featureList):</span><br><span class="line">16     step1 = (&apos;Imputer&apos;, Imputer())</span><br><span class="line">17     step2_1 = (&apos;OneHotEncoder&apos;, OneHotEncoder(sparse=False))</span><br><span class="line">18     step2_2 = (&apos;ToLog&apos;, FunctionTransformer(np.log1p))</span><br><span class="line">19     step2_3 = (&apos;ToBinary&apos;, Binarizer())</span><br><span class="line">20     step2 = (&apos;FeatureUnionExt&apos;, FeatureUnionExt(transformer_list=[step2_1, step2_2, step2_3], idx_list=[[0], [1, 2, 3], [4]]))</span><br><span class="line">21     step3 = (&apos;MinMaxScaler&apos;, MinMaxScaler())</span><br><span class="line">22     step4 = (&apos;SelectKBest&apos;, SelectKBest(chi2, k=3))</span><br><span class="line">23     step5 = (&apos;PCA&apos;, PCA(n_components=2))</span><br><span class="line">24     step6 = (&apos;LogisticRegression&apos;, LogisticRegression(penalty=&apos;l2&apos;))</span><br><span class="line">25     pipeline = PipelineExt(steps=[step1, step2, step3, step4, step5, step6])</span><br><span class="line">26     pipeline.fit(iris.data, iris.target)</span><br><span class="line">27     #最终的特征列表</span><br><span class="line">28     leaves = pipeline.getFeatureList(featureList)</span><br><span class="line">29     #为最终的特征输出对应的系数</span><br><span class="line">30     for i in range(len(leaves)):</span><br><span class="line">31         print leaves[i], pipeline.steps[-1][-1].coef_[i]</span><br><span class="line">32 </span><br><span class="line">33 def main():</span><br><span class="line">34     iris = load_iris()</span><br><span class="line">35     iris.data = np.hstack((np.random.choice([0, 1, 2], size=iris.data.shape[0]+1).reshape(-1,1), np.vstack((iris.data, np.full(4, np.nan).reshape(1,-1)))))</span><br><span class="line">36     iris.target = np.hstack((iris.target, np.array([np.median(iris.target)])))</span><br><span class="line">37     root = initRoot([&apos;color&apos;, &apos;Sepal.Length&apos;, &apos;Sepal.Width&apos;, &apos;Petal.Length&apos;, &apos;Petal.Width&apos;])</span><br><span class="line">38     featureList = np.array([transform.feature for transform in root.transformList])</span><br><span class="line">39 </span><br><span class="line">40     datamining(iris, featureList)</span><br><span class="line">41 </span><br><span class="line">42     root.printTree()</span><br><span class="line">43 </span><br><span class="line">44 if __name__ == &apos;__main__&apos;:</span><br><span class="line">45     main()</span><br></pre></td></tr></table></figure>
+
+<p>　　运行程序，最终的特征及对应的系数输出如下：</p>
+<p><img src="./pic/180710.jpg" alt="img"></p>
+<p>　　输出网络结构的深度遍历（部分截图）：</p>
+<p><img src="./pic/180711.jpg" alt="img"></p>
+<p>　　为了更好的展示转换行为构成的网络，我们还可以基于networkx构建有向图，通过matplotlib进行展示（ple.py）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"> 1 #递归的方式进行深度遍历，生成基于networkx的有向图</span><br><span class="line"> 2 def _draw(G, root, nodeLabelDict, edgeLabelDict):</span><br><span class="line"> 3     nodeLabelDict[root.label] = root.name</span><br><span class="line"> 4     for transform in root.transformList:</span><br><span class="line"> 5         G.add_edge(root.label, transform.feature.label)</span><br><span class="line"> 6         edgeLabelDict[(root.label, transform.feature.label)] = transform.label</span><br><span class="line"> 7         _draw(G, transform.feature, nodeLabelDict, edgeLabelDict)</span><br><span class="line"> 8 </span><br><span class="line"> 9 #判断是否图是否存在环</span><br><span class="line">10 def _isCyclic(root, walked):</span><br><span class="line">11     if root in walked:</span><br><span class="line">12         return True</span><br><span class="line">13     else:</span><br><span class="line">14         walked.add(root)</span><br><span class="line">15         for transform in root.transformList:</span><br><span class="line">16             ret = _isCyclic(transform.feature, walked)</span><br><span class="line">17             if ret:</span><br><span class="line">18                 return True</span><br><span class="line">19         walked.remove(root)</span><br><span class="line">20         return False</span><br><span class="line">21 </span><br><span class="line">22 #广度遍历生成瀑布式布局</span><br><span class="line">23 def fall_layout(root, x_space=1, y_space=1):</span><br><span class="line">24     layout = &#123;&#125;</span><br><span class="line">25     if _isCyclic(root, set()):</span><br><span class="line">26         raise Exception(&apos;Graph is cyclic&apos;)</span><br><span class="line">27     </span><br><span class="line">28     queue = [None, root]</span><br><span class="line">29     nodeDict = &#123;&#125;</span><br><span class="line">30     levelDict = &#123;&#125;</span><br><span class="line">31     level = 0</span><br><span class="line">32     while len(queue) &gt; 0:</span><br><span class="line">33         head = queue.pop()</span><br><span class="line">34         if head is None:</span><br><span class="line">35             if len(queue) &gt; 0:</span><br><span class="line">36                 level += 1</span><br><span class="line">37                 queue.insert(0, None)</span><br><span class="line">38         else:</span><br><span class="line">39             if head in nodeDict:</span><br><span class="line">40                 levelDict[nodeDict[head]].remove(head)</span><br><span class="line">41             nodeDict[head] = level</span><br><span class="line">42             levelDict[level] = levelDict.get(level, []) + [head]</span><br><span class="line">43             for transform in head.transformList:</span><br><span class="line">44                 queue.insert(0, transform.feature)</span><br><span class="line">45 </span><br><span class="line">46     for level in levelDict.keys():</span><br><span class="line">47         nodeList = levelDict[level]</span><br><span class="line">48         n_nodes = len(nodeList)</span><br><span class="line">49         offset = - n_nodes / 2</span><br><span class="line">50         for i in range(n_nodes):</span><br><span class="line">51             layout[nodeList[i].label] = (level * x_space, (i + offset) * y_space)</span><br><span class="line">52 </span><br><span class="line">53     return layout</span><br><span class="line">54 </span><br><span class="line">55 def draw(root):</span><br><span class="line">56     G = nx.DiGraph()</span><br><span class="line">57     nodeLabelDict = &#123;&#125;</span><br><span class="line">58     edgeLabelDict = &#123;&#125;</span><br><span class="line">59 </span><br><span class="line">60     _draw(G, root, nodeLabelDict, edgeLabelDict)</span><br><span class="line">61     #设定网络布局方式为瀑布式</span><br><span class="line">62     pos = fall_layout(root)</span><br><span class="line">63 </span><br><span class="line">64     nx.draw_networkx_nodes(G,pos,node_size=100, node_color=&quot;white&quot;)</span><br><span class="line">65     nx.draw_networkx_edges(G,pos, width=1,alpha=0.5,edge_color=&apos;black&apos;)</span><br><span class="line">66     #设置网络中节点的标签内容及格式</span><br><span class="line">67     nx.draw_networkx_labels(G,pos,labels=nodeLabelDict, font_size=10,font_family=&apos;sans-serif&apos;)</span><br><span class="line">68     #设置网络中边的标签内容及格式</span><br><span class="line">69     nx.draw_networkx_edge_labels(G, pos, edgeLabelDict)</span><br><span class="line">70 </span><br><span class="line">71     plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>　　以图形界面展示网络的结构：</p>
+<p><img src="./pic/180712.jpg" alt="img"></p>
+<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6 总结"></a>6 总结</h1><p>　　记录下特征转换行为的最好时机其实是转换的同时。可惜的是，sklearn目前并不支持这样的功能。在本文中，将这一功能集中到流水线处理和并行处理的模块当中，只能算是一个临时的手段。</p>
+<h1 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7 参考资料"></a>7 参考资料</h1><ol>
+<li><a href="http://www.cnblogs.com/jasonfreak/p/5448462.html" target="_blank" rel="noopener">《使用sklearn优雅地进行数据挖掘》</a></li>
+<li><a href="http://www.cnblogs.com/jasonfreak/p/5448385.html" target="_blank" rel="noopener">《使用sklearn做单机特征工程》</a></li>
+<li><a href="http://www.cnblogs.com/jasonfreak/p/5448462.html" target="_blank" rel="noopener">sklearn.preprocessing.OneHotEncoder</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/特征工程/" rel="tag"># 特征工程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/20/180720_使用sklearn做特征工程/" rel="next" title="使用sklearn做特征工程">
+                <i class="fa fa-chevron-left"></i> 使用sklearn做特征工程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/11/180811_浅谈SMOTE之类不平衡过采样方法/" rel="prev" title="浅谈SMOTE之类不平衡过采样方法">
+                浅谈SMOTE之类不平衡过采样方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhuangzhouzhishui</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-为什么要记录特征转换行为？"><span class="nav-number">1.</span> <span class="nav-text">1 为什么要记录特征转换行为？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-有哪些特征转换的方式？"><span class="nav-number">2.</span> <span class="nav-text">2 有哪些特征转换的方式？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-特征转换的组合"><span class="nav-number">3.</span> <span class="nav-text">3 特征转换的组合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-sklearn源码分析"><span class="nav-number">4.</span> <span class="nav-text">4 sklearn源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-一对一映射"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 一对一映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-一对多映射"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 一对多映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-多对多映射"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 多对多映射</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-实践"><span class="nav-number">5.</span> <span class="nav-text">5 实践</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-总结"><span class="nav-number">6.</span> <span class="nav-text">6 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-参考资料"><span class="nav-number">7.</span> <span class="nav-text">7 参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuangzhouzhishui</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

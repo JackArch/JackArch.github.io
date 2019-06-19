@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、审题审题过程应该是在这道题中焦灼的一环，因为直到现在我都不确定我是否完全明白了题意。  In their fourth Kaggle competition, Avito is challenging you to predict demand for an online advertisement based on its full description (title, descripti">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kaggle广告转化率预测比赛小结">
+<meta property="og:url" content="http://JackArch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/index.html">
+<meta property="og:site_name" content="Deep  |  Mind">
+<meta property="og:description" content="一、审题审题过程应该是在这道题中焦灼的一环，因为直到现在我都不确定我是否完全明白了题意。  In their fourth Kaggle competition, Avito is challenging you to predict demand for an online advertisement based on its full description (title, descripti">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://jackarch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/pic/181011.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/pic/181012.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/pic/181013.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/pic/181014.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/pic/181015.jpg">
+<meta property="og:updated_time" content="2019-06-19T10:35:37.652Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kaggle广告转化率预测比赛小结">
+<meta name="twitter:description" content="一、审题审题过程应该是在这道题中焦灼的一环，因为直到现在我都不确定我是否完全明白了题意。  In their fourth Kaggle competition, Avito is challenging you to predict demand for an online advertisement based on its full description (title, descripti">
+<meta name="twitter:image" content="http://jackarch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/pic/181011.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://JackArch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/">
+
+
+
+
+
+  <title>Kaggle广告转化率预测比赛小结 | Deep  |  Mind</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep  |  Mind</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://JackArch.github.io/2018/10/08/181008_Kaggle广告转化率预测比赛小结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhuangzhouzhishui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep  |  Mind">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kaggle广告转化率预测比赛小结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-08T15:43:06+08:00">
+                2018-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、审题"><a href="#一、审题" class="headerlink" title="一、审题"></a>一、审题</h2><p>审题过程应该是在这道题中焦灼的一环，因为直到现在我都不确定我是否完全明白了题意。</p>
+<blockquote>
+<p>In their fourth Kaggle competition, Avito is challenging you to predict demand for an online advertisement based on its full description (title, description, images, etc.), its context (geographically where it was posted, similar ads already posted) and historical demand for similar ads in similar contexts. With this information, Avito can inform sellers on how to best optimize their listing and provide some indication of how much interest they should realistically expect to receive.</p>
+</blockquote>
+<p><strong>Excuse me!</strong> 可能我英语真的不好，但是你真的只说了举办这个比赛你们是为了什么，而没说我们对于比赛要干什么！</p>
+<p>这道题是由Avito这个公司发起，这个公司我暂时把它理解为国内‘闲鱼’类型的二手平台，给的主要数据为150多万个样本，每个样本对应一个商品信息，具体包括用户id，商品id，商品的描述，类型，价格，图片等等。要预测的target是一个概率，可以说是一个商品的成交转换率。所以，我认为，Avito发起这个竞赛的主要目的是为了给用户提供一个编辑自己商品广告使得成交转化率最高的方法。</p>
+<p>样本对应的特征可以分为如下几类：类别，文本，图片，数值，日期。</p>
+<p>这里几乎把所有的特征类别都包括了，所以对于特征的处理主要分为三大块：</p>
+<p>1、特征工程</p>
+<p>2、文本NLP</p>
+<p>3、图片处理</p>
+<p>介于分工，图片处理不是我干的事，而且最后其实也没有派上用场，所以在这里你发现不到关于图片的内容！</p>
+<p>比赛的数据集链接在这里：<a href="https://www.kaggle.com/c/avito-demand-prediction/data" target="_blank" rel="noopener">https://www.kaggle.com/c/avito-demand-prediction/data</a></p>
+<h2 id="二、Kernels"><a href="#二、Kernels" class="headerlink" title="二、Kernels"></a>二、Kernels</h2><p>成也kernel，败也kernel。这么说Kaggle这个比赛实在是太合适不过，每个竞赛的kernels栏目中提供了大量的竞赛者的开源分析和代码，你可以站在别人的肩膀上来操作你自己的想法。对于数据的初步分析，你完全可以在kernel里找到现成的分析结果，这确实为熟悉题目，熟悉数据创造了捷径，节省了时间。</p>
+<p>然而，必须吐槽一下，在比赛的前一天有人发布了一个成绩可排在15%的blending的kernel，这使得当时的排名发生巨大混乱，对用心做比赛的人伤害颇深，kaggle官方确实得管一管这种事。</p>
+<h2 id="三、构建baseline"><a href="#三、构建baseline" class="headerlink" title="三、构建baseline"></a>三、构建baseline</h2><p>baseline是处理一切的框架，这时候可以借助kernel，</p>
+<h2 id="四、特征工程"><a href="#四、特征工程" class="headerlink" title="四、特征工程"></a>四、特征工程</h2><p>不知道把特征工程放在这个位置对不对，因为这是一个贯穿始终的东西。内容太多了，记录的东西也太多了。</p>
+<h4 id="4-1-缺失值处理"><a href="#4-1-缺失值处理" class="headerlink" title="4.1 缺失值处理"></a>4.1 缺失值处理</h4><p>数据中的缺失值有很多，由于我使用的模型是lightgbm，此模型对于缺失值可以不做处理，但是应该仅仅是针对类别特征。对于数值型的特征，采用的方法可以见这篇文章<a href="https://www.cnblogs.com/bjwu/articles/9077299.html" target="_blank" rel="noopener">【转】数据分析中的缺失值处理</a></p>
+<ul>
+<li>对于文本特征<code>descripition</code>和<code>title</code>，我是直接采用了填充’missing’的方法</li>
+<li>对于数值特征<code>price</code>，我是直接填充<code>-999</code>，因为两点：1、这是一个很重要的特征，2、采用的决策树模型即将填充的<code>-999</code>直接分为一类，若采用的是线性模型，则不能这样。</li>
+<li>对于其他的类别特征，我没有对缺失值进行处理，原因还是因为lightgbm</li>
+</ul>
+<h4 id="4-2-类别特征"><a href="#4-2-类别特征" class="headerlink" title="4.2 类别特征"></a>4.2 类别特征</h4><p>该竞赛中类别特征很多，我是直接将这些类别进行labelencoder，由于采用的是基于决策树的lightgbm，所以没有必要进行onehot编码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat_cols = &#123;&quot;region&quot;,&quot;city&quot;,&quot;parent_category_name&quot;,&quot;category_name&quot;,&quot;user_type&quot;,&quot;image_top_1&quot;,&quot;param_2&quot;,&quot;param_3&quot;&#125;</span><br><span class="line"></span><br><span class="line">lbl = LabelEncoder()</span><br><span class="line">for col in cat_cols:</span><br><span class="line">    merge[col] = lbl.fit_transform(merge[col].astype(str))</span><br></pre></td></tr></table></figure>
+
+<p>对于类别特征，尤其是<a href="https://www.cnblogs.com/bjwu/p/9087071.html" target="_blank" rel="noopener">高势集类别（High Categorical）特征</a>，在discuss中，我学到了一种用word2vec对特征做聚类的方法，另行介绍。</p>
+<h4 id="4-3-数值型特征"><a href="#4-3-数值型特征" class="headerlink" title="4.3 数值型特征"></a>4.3 数值型特征</h4><p>唯一一个数值型特征是<code>price</code>，经过plot后发现price的数值呈现一个方差很大的分布，从0到百万不等。所以，这时候，采用log变换将数值映射到一个小的范围是一个比较好的选择。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">merge[&quot;price&quot;] = np.log(merge[&quot;price&quot;]+0.001)</span><br><span class="line">merge[&quot;price&quot;].fillna(-999,inplace=True)</span><br></pre></td></tr></table></figure>
+
+<p>下图是经过log后变换的price：</p>
+<p><img src="./pic/181011.jpg" alt="img"></p>
+<h4 id="4-4-日期特征"><a href="#4-4-日期特征" class="headerlink" title="4.4 日期特征"></a>4.4 日期特征</h4><p>简单的，将年月日进行提取，都作为一个新的特征：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">merge[&quot;activation_weekday&quot;] = merge[&apos;activation_date&apos;].dt.weekday</span><br><span class="line">merge[&quot;Weekd_of_Year&quot;] = merge[&apos;activation_date&apos;].dt.week</span><br><span class="line">merge[&quot;Day_of_Month&quot;] = merge[&apos;activation_date&apos;].dt.day</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、文本特征"><a href="#五、文本特征" class="headerlink" title="五、文本特征"></a>五、文本特征</h2><p>还是单独拿出一章写吧， 因为在这里花费的时间才是最多的。这里会介绍一些NLP的基本用法，当然很浅显。</p>
+<h4 id="5-1-挖掘文本特征"><a href="#5-1-挖掘文本特征" class="headerlink" title="5.1 挖掘文本特征"></a>5.1 挖掘文本特征</h4><p>题目中的文本特征一共有三个，且是俄文，分别是</p>
+<p><code>descripition</code>：对于商品的描述，文字较多（10-100不等），有数字和表情符号</p>
+<p><code>title</code>：商品的题目，文字较少（3-20）</p>
+<p><code>param_1</code>: 不知道什么的文字特征，文字很少</p>
+<p>我们提取了很多关于这些文本的特征，包括每个特征的总次数，stopwords次数，数字的数目，标点符号的数目，以及各种字符所占的比例等等。对于最开始的特征挖掘，先不管三七二十一，头脑风暴能挖一个是一个，到时候再删也可以。</p>
+<p>代码借鉴了某kernel：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">for cols in textfeats:</span><br><span class="line">    merge[cols] = merge[cols].astype(str)</span><br><span class="line">    merge[cols] = merge[cols].astype(str).fillna(&apos;missing&apos;) # FILL NA</span><br><span class="line">    merge[cols] = merge[cols].str.lower() # Lowercase all text, so that capitalized words dont get treated differently</span><br><span class="line">    merge[cols + &apos;_num_stopwords_en&apos;] = merge[cols].apply(lambda x: len([w for w in x.split() if w in stopwords_en]))  # Count number of Stopwords</span><br><span class="line">    merge[cols + &apos;_num_stopwords&apos;] = merge[cols].apply(lambda x: len([w for w in x.split() if w in stopwords])) # Count number of Stopwords</span><br><span class="line">    merge[cols + &apos;_num_punctuations&apos;] = merge[cols].apply(lambda comment: (comment.count(RE_PUNCTUATION))) # Count number of Punctuations</span><br><span class="line">    merge[cols + &apos;_num_alphabets&apos;] = merge[cols].apply(lambda comment: (comment.count(r&apos;[a-zA-Z]&apos;))) # Count number of Alphabets</span><br><span class="line">    merge[cols + &apos;_num_alphanumeric&apos;] = merge[cols].apply(lambda comment: (comment.count(r&apos;[A-Za-z0-9]&apos;))) # Count number of AlphaNumeric</span><br><span class="line">    merge[cols + &apos;_num_digits&apos;] = merge[cols].apply(lambda comment: (comment.count(&apos;[0-9]&apos;))) # Count number of Digits</span><br><span class="line">    merge[cols + &apos;_num_letters&apos;] = merge[cols].apply(lambda comment: len(comment)) # Count number of Letters</span><br><span class="line">    merge[cols + &apos;_num_words&apos;] = merge[cols].apply(lambda comment: len(comment.split())) # Count number of Words</span><br><span class="line">    merge[cols + &apos;_num_unique_words&apos;] = merge[cols].apply(lambda comment: len(set(w for w in comment.split())))</span><br><span class="line">    merge[cols + &apos;_words_vs_unique&apos;] = merge[cols+&apos;_num_unique_words&apos;] / merge[cols+&apos;_num_words&apos;] # Count Unique Words</span><br><span class="line">    merge[cols + &apos;_letters_per_word&apos;] = merge[cols+&apos;_num_letters&apos;] / merge[cols+&apos;_num_words&apos;] # Letters per Word</span><br><span class="line">    merge[cols + &apos;_punctuations_by_letters&apos;] = merge[cols+&apos;_num_punctuations&apos;] / merge[cols+&apos;_num_letters&apos;] # Punctuations by Letters</span><br><span class="line">    merge[cols + &apos;_punctuations_by_words&apos;] = merge[cols+&apos;_num_punctuations&apos;] / merge[cols+&apos;_num_words&apos;] # Punctuations by Words</span><br><span class="line">    merge[cols + &apos;_digits_by_letters&apos;] = merge[cols+&apos;_num_digits&apos;] / merge[cols+&apos;_num_letters&apos;] # Digits by Letters</span><br><span class="line">    merge[cols + &apos;_alphanumeric_by_letters&apos;] = merge[cols+&apos;_num_alphanumeric&apos;] / merge[cols+&apos;_num_letters&apos;] # AlphaNumeric by Letters</span><br><span class="line">    merge[cols + &apos;_alphabets_by_letters&apos;] = merge[cols+&apos;_num_alphabets&apos;] / merge[cols+&apos;_num_letters&apos;] # Alphabets by Letters</span><br><span class="line">    merge[cols + &apos;_stopwords_by_letters&apos;] = merge[cols+&apos;_num_stopwords&apos;] / merge[cols+&apos;_num_letters&apos;] # Stopwords by Letters</span><br><span class="line">    merge[cols + &apos;_stopwords_by_words&apos;] = merge[cols+&apos;_num_stopwords&apos;] / merge[cols+&apos;_num_words&apos;] # Stopwords by Letters</span><br><span class="line">    merge[cols + &apos;_stopwords_by_letters_en&apos;] = merge[cols+&apos;_num_stopwords_en&apos;] / merge[cols+&apos;_num_letters&apos;] # Stopwords by Letters</span><br><span class="line">    merge[cols + &apos;_stopwords_by_words_en&apos;] = merge[cols+&apos;_num_stopwords_en&apos;] / merge[cols+&apos;_num_words&apos;] # Stopwords by Letters</span><br><span class="line">    merge[cols + &apos;_mean&apos;] = merge[cols].apply(lambda x: 0 if len(x) == 0 else float(len(x.split())) / len(x)) * 10 # Mean</span><br><span class="line">    merge[cols + &apos;_num_sum&apos;] = merge[cols].apply(sum_numbers)</span><br><span class="line">    </span><br><span class="line">merge[&apos;title_desc_len_ratio&apos;] = merge[&apos;title_num_letters&apos;]/(merge[&apos;description_num_letters&apos;]+1)</span><br><span class="line">merge[&apos;title_param1_len_ratio&apos;] = merge[&apos;title_num_letters&apos;]/(merge[&apos;param_1_copy_num_letters&apos;]+1)</span><br><span class="line">merge[&apos;param_1_copy_desc_len_ratio&apos;] = merge[&apos;param_1_copy_num_letters&apos;]/(merge[&apos;description_num_letters&apos;]+1)</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2-TF-IDF"><a href="#5-2-TF-IDF" class="headerlink" title="5.2 TF-IDF"></a>5.2 TF-IDF</h4><p>TF-IDF是一个对于关键字权重的度量，简单来说：</p>
+<p>1、统计句子中每个词的数目，并将该数目标在该句子的句向量对应位置上。（句向量每个位置对应词库中的一个特定词，每句话的句向量的相同位置对应的词相同）</p>
+<p>2、对于1中生成的句向量，进行单文本词频TF(Term Frequency)处理：因为对于长句子，词出现的数目会更多，为了对词出现的频率进行归一化，对句向量进行TF 处理（每个词的个数除以该句子总词数）。</p>
+<p>3、对于句向量中的每个词，要给予权重。为什么呢？例如：对于‘原子能的应用’这个句子，‘应用’这个词是个通用词，在不同句子中出现的概率很高，而‘原子能’是个很专业的词，后者在相关性排名中比前者更重要。因此，一个词预测主题的能力越强，权重越大。<br>对于某些停止词（stopwords），如‘的’，‘是’之类的词，由于其出现频率相当之高，权重为0。</p>
+<p>权重的设定采用的是‘逆文本频率指数’（IDF）的方法，公式为log(DDw)log(DDw)，其中D为全部句子数量，D_w为某词在D_w个句子中出现过的数量。所以，如果一个词只在很少的句子中出现，通过它就容易将该句子分类，它的权重就越大。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tv = TfidfVectorizer(max_features=100000,</span><br><span class="line">                         ngram_range=(1, 3),</span><br><span class="line">                         stop_words=set(stopwords.words(&apos;russian&apos;)))</span><br><span class="line">X_name_train = tv.fit_transform(all_train[&apos;title&apos;])</span><br></pre></td></tr></table></figure>
+
+<p>由于该题文本数据量太大，在fit了三个文本特征后，默认是输出稀疏矩阵，如果这个时候进行<code>toarray()</code>的操作，我的渣渣机器就会出现爆内存的错误，所以建议这里直接对稀疏矩阵进行处理。我用了三种处理方法：</p>
+<p>0、先将这三个文本的稀疏矩阵hstack：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sparse_merge_train = hstack((X_description_train, X_param1_train, X_name_train)).tocsr()</span><br></pre></td></tr></table></figure>
+
+<p>PS：稀疏矩阵在<code>scipy</code>中可表示成几种储存形式，常用的有<code>csr</code>,<code>csc</code>。前者为<code>行格式Row format</code>，后者为<code>列格式Columns format</code>， 这两者互为转置。csc列切片操作快，csr行切片操作快，所以为了之后分离train和test数据集，后续需要进行行切片，所以进行<code>tocsr()</code>操作。</p>
+<p>1、SVD</p>
+<p>在茫茫的大稀疏矩阵中提取奇异值最高的几个维度。为什么不用PCA呢？PCA也能达到降维的目的，但是需要对数值进行零均值化，以至于<strong>丢失零矩阵的稀疏性</strong>，我是这样理解的啊哈哈。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">svd_obj = TruncatedSVD(n_components=n_comp, algorithm=&apos;arpack&apos;)</span><br><span class="line">svd_obj.fit(X_name_train)</span><br></pre></td></tr></table></figure>
+
+<p>2、Ridge</p>
+<p>其实很简单，就是将sparse_merge_train通过一个ridge模型进行训练，之后得出一个预测出来的特征。ridge简单来说就是一个一层线性回归加l2正则化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def ridge_proc(train_data, test_data, y_train):</span><br><span class="line">    X_train_1, X_train_2, y_train_1, y_train_2 = train_test_split(train_data, y_train,</span><br><span class="line">                                                                  test_size = 0.5,</span><br><span class="line">                                                                  shuffle = False)</span><br><span class="line">    print(&apos;[&#123;&#125;] Finished splitting&apos;.format(time.time() - start_time))</span><br><span class="line"></span><br><span class="line">    model = Ridge(solver=&quot;sag&quot;, fit_intercept=True, random_state=205, alpha=3.3)</span><br><span class="line">    model.fit(X_train_1, y_train_1)</span><br><span class="line">    ridge_preds1 = model.predict(X_train_2)</span><br><span class="line">    ridge_preds1f = model.predict(test_data)</span><br><span class="line">    model = Ridge(solver=&quot;sag&quot;, fit_intercept=True, random_state=205, alpha=3.3)</span><br><span class="line">    model.fit(X_train_2, y_train_2)</span><br><span class="line">    ridge_preds2 = model.predict(X_train_1)</span><br><span class="line">    ridge_preds_oof = np.concatenate((ridge_preds2, ridge_preds1), axis=0)</span><br><span class="line">    ridge_preds_test = (ridge_preds1f + ridge_preds2f) / 2.0</span><br><span class="line">    print(&apos;RMSLE OOF: &#123;&#125;&apos;.format(rmse(ridge_preds_oof, y_train)))</span><br><span class="line"></span><br><span class="line">    return ridge_preds_oof, ridge_preds_test</span><br></pre></td></tr></table></figure>
+
+<p>同理，这里用DNN，CNN也可以进行类似操作，这里不再深入。</p>
+<p>3、直接做特征</p>
+<p>将sparse_merge_train这个硕大的稀疏矩阵直接做特征不失为一个臃肿的方法，但是效果却是最好的。由于稀疏矩阵的合并需要使用hstack，所以其他特征也需要进行稀疏化。<code>csr_matrix()</code>，这个scipy中的函数了解一下。</p>
+<h4 id="5-3-Word2Vec"><a href="#5-3-Word2Vec" class="headerlink" title="5.3 Word2Vec"></a>5.3 Word2Vec</h4><p>这里提一下Xin Rong的这篇论文，《word2vec Parameter Learning Explained》</p>
+<p>简单来说：</p>
+<p>w2v的模型是一个只有一个隐藏层的神经网络，input为上下文词(CBOW)或目标词(Skip-gram)的one-hot编码，output对应分别为目标词或上下文词的出现概率。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = Word2Vec(texts, size=FEAT_VEC_SIZE, window=5, min_count=5, workers=4)</span><br></pre></td></tr></table></figure>
+
+<p>在本题中，使用word2vec的目的不在于预测上下文，而在于提取文本特征。所以，word2vec的作用在于提供词向量，所以对于w2v模型，我们的关注点不在于最后的predict，而是输入层与隐藏层之间的参数权重矩阵W，这个矩阵一共有v行（v 为ont-hot编码中所有词的个数），每一行最后的训练结果即为对应词的词向量。隐藏层与输出层之间的权重矩阵W’的每列也可看作是另一种形式的词向量，output的每个位置的结果即为该位置词出现的概率。</p>
+<p>为什么每一行可以看作对应词的词向量？假设input词为一个one-hot列，只有一个位置为1，其余为0，则隐藏层的结果即为该位置对应的权重矩阵W的行的copy的转置。隐藏层到输出的结果可以看成是这个copy与该词上下文词出现概率的对应关系。所以这个copy可以与一个特定的词一一对应。</p>
+<p>那么句向量呢？我们已经通过word2vec模型得到了句子中每个词的词向量，我们只需要把这个句子每个词的词向量进行线性相加等操作就可得到该句子的句向量</p>
+<p>在这之前还需要进行一系列的预处理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># num_words: the maximum number of words to keep, based on word frequency. Only the most common num_words words will be kept.</span><br><span class="line">tokenizer = Tokenizer(num_words=MAX_NUM_WORDS)</span><br><span class="line">tokenizer.fit_on_texts(texts)</span><br><span class="line"></span><br><span class="line">#将一个句子拆分成单词id构成的列表</span><br><span class="line">sequences = tokenizer.texts_to_sequences(texts)</span><br><span class="line">#单词字典</span><br><span class="line">word_index = tokenizer.word_index</span><br><span class="line">print(&apos;Found %s unique tokens&apos; % len(word_index))</span><br><span class="line"></span><br><span class="line"># 填充句子到相同长度, 作为最后模型训练数据</span><br><span class="line">traindes = pad_sequences(sequences, maxlen=MAX_TEXT_LENGTH)</span><br><span class="line"></span><br><span class="line">embedding_matrix = np.zeros((MAX_NUM_WORDS, FEAT_VEC_SIZE))</span><br><span class="line"></span><br><span class="line">for word, i in word_index.items():</span><br><span class="line">    if word in model.wv and i &lt; MAX_NUM_WORDS:</span><br><span class="line">        embedding_matrix[i] = model.wv.word_vec(word)</span><br></pre></td></tr></table></figure>
+
+<p>上述这个嵌入矩阵为词向量矩阵，包含着所有保留词的词向量。</p>
+<p>生成句向量后，处理方法跟5.2节几乎无异。</p>
+<h4 id="5-4-Doc2Vec"><a href="#5-4-Doc2Vec" class="headerlink" title="5.4 Doc2Vec"></a>5.4 Doc2Vec</h4><p>原理基于word2vec，只是在输入层中加了句子id，模型得到的结果直接为句向量。</p>
+<p><img src="./pic/181012.jpg" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TaggededDocument = gensim.models.doc2vec.TaggedDocument</span><br><span class="line">x_train = []</span><br><span class="line">for i, text in enumerate(texts):</span><br><span class="line">    document = TaggededDocument(text, tags=[i])</span><br><span class="line">    x_train.append(document)</span><br><span class="line"></span><br><span class="line">d2v_model = Doc2Vec(x_train, min_count=1, window = 3, size= 100, sample=1e-3, negative=5, workers=4)</span><br><span class="line">infered_vectors_list = []</span><br><span class="line">for text, label in x_train:</span><br><span class="line">    vector = d2v_model.infer_vector(text)</span><br><span class="line">    infered_vectors_list.append(vector)</span><br></pre></td></tr></table></figure>
+
+<p>处理方法：</p>
+<p>我对doc2vec产生的句向量分别做了kmeans和DBSCAN聚类，不过效果并不是很理想。</p>
+<h2 id="六、模型预测"><a href="#六、模型预测" class="headerlink" title="六、模型预测"></a>六、模型预测</h2><h4 id="6-1-直接LightGBM-regression"><a href="#6-1-直接LightGBM-regression" class="headerlink" title="6.1 直接LightGBM-regression"></a>6.1 直接LightGBM-regression</h4><p>这应该算是baseline中的模型了，但是其实这种最直接最简单的模型在最后的效果居然最好，调参过程还是比较重要的。献一张我们的feature-importance</p>
+<p><img src="./pic/181013.jpg" alt="img"></p>
+<h4 id="6-2-LightGBM-classification-regression"><a href="#6-2-LightGBM-classification-regression" class="headerlink" title="6.2 LightGBM-classification-regression"></a>6.2 LightGBM-classification-regression</h4><p><img src="./pic/181014.jpg" alt="img"></p>
+<p>由于target的呈现出了上图的分布，可以看到，target为0的样本远超其他样本的总和。所以，这里可以采用过采样或者欠采样的方法进行处理，但是我们没有。</p>
+<p>我们采用了先用分类器预测1/0值，再对于非0值进行回归预测的方法来想着提高最后的分数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">y_train1 = y_train.apply(lambda x: 1 if x&gt;0 else 0)</span><br><span class="line">y_test1 = y_test.apply(lambda x: 1 if x&gt;0 else 0)</span><br><span class="line">d_train = lgb.Dataset(df_train, label=y_train1, categorical_feature=list(cat_cols),free_raw_data=False)</span><br><span class="line">d_valid = lgb.Dataset(df_test, label=y_test1, categorical_feature=list(cat_cols), reference=d_train,free_raw_data=False)</span><br><span class="line">watchlist = [d_valid]</span><br><span class="line">params = &#123;</span><br><span class="line">    &apos;learning_rate&apos;: 0.01,</span><br><span class="line">    &apos;application&apos;: &apos;binary&apos;,</span><br><span class="line">    &apos;is_unbalance&apos;:True,</span><br><span class="line">    &apos;metric&apos;: [&apos;auc&apos;,&apos;binary_error&apos;,&apos;fbeta&apos;]</span><br><span class="line">&#125;</span><br><span class="line">modelC = lgb.train(params,</span><br><span class="line">                  train_set=d_train,</span><br><span class="line">                  num_boost_round=1000,</span><br><span class="line">                  valid_sets=watchlist,</span><br><span class="line">                  early_stopping_rounds=50,</span><br><span class="line">                  verbose_eval=500)</span><br></pre></td></tr></table></figure>
+
+<p>对于该分类器的metric，这里提取了验证集的precision，recall和f1用来选择合适的阈值。在本题来说，target为0值为负类，非0值的为正类。在这个分类器中，我们预测出0值，且要保证正类尽可能不被预测成负类，因为正类的值在回归器中预测的结果会更准确，所以对于此分类器的metric，我们要求<strong>查全率</strong>recall尽可能高。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def fbeta(y_true, pred):</span><br><span class="line">   # 调整阈值</span><br><span class="line">   best_recall=0</span><br><span class="line">   precision_recall = []</span><br><span class="line">   best_thershold=0</span><br><span class="line">   for thershold in [0.15,0.2, 0.25,0.3,0.4,0.45,0.5]:</span><br><span class="line">       preds = [1 if i &gt; thershold else 0 for i in pred]</span><br><span class="line">       precision, recall, f_score, true_sum=precision_recall_fscore_support(y_true, preds)</span><br><span class="line">       if recall[1] &gt; best_recall:</span><br><span class="line">           best_thershold = thershold</span><br><span class="line">           precision_recall = []</span><br><span class="line">           best_recall=recall[1]</span><br><span class="line">   return &apos;best_recall&apos;, best_recall, True</span><br></pre></td></tr></table></figure>
+
+<p>对于分类器后的回归器，我们输入的数据集为经过分类器预测为1的所有数据，而并不是原始的通过判断0或非0得到的target的1/0数据。</p>
+<p>下面这个流程图展示了两种输入到回归器中的方法。</p>
+<p><img src="./pic/181015.jpg" alt="img"></p>
+<h2 id="七、Blending"><a href="#七、Blending" class="headerlink" title="七、Blending"></a>七、Blending</h2><p>这是在最后一刻有人爆出来的kernel，这里直接借鉴过来吧。以下是进行筛选blending的模型结果的过程：</p>
+<p>1、将之前所有模型预测过的结果merge起来，且将分数top3的模型结果标记</p>
+<p>2、对1中merge的结果进行相关性分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.heatmap(df_base.iloc[:,1:].corr(),annot=True,fmt=&quot;.2f&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>3、找到与1中标记的top3相关性最大的模型结果，然后drop</p>
+<p>4、对剩下的模型结果进行averaging</p>
+<p>提升效果很明显，但是应该也有瓶颈。</p>
+<hr>
+<p><strong>Reference</strong>:</p>
+<ol>
+<li>数学之美，吴军</li>
+<li><a href="http://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction" target="_blank" rel="noopener">http://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/26645088" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26645088</a></li>
+<li><a href="https://www.kaggle.com/sudalairajkumar/simple-exploration-baseline-notebook-avito" target="_blank" rel="noopener">https://www.kaggle.com/sudalairajkumar/simple-exploration-baseline-notebook-avito</a></li>
+<li><a href="https://blog.csdn.net/wangjian1204/article/details/50642732" target="_blank" rel="noopener">https://blog.csdn.net/wangjian1204/article/details/50642732</a></li>
+<li><a href="https://www.kaggle.com/dandres/best-public-blend-0-2204" target="_blank" rel="noopener">https://www.kaggle.com/dandres/best-public-blend-0-2204</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/20/180920_模型融合/" rel="next" title="模型融合">
+                <i class="fa fa-chevron-left"></i> 模型融合
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/21/181021_tensorflow中一种融合多个模型的方法/" rel="prev" title="tensorflow中一种融合多个模型的方法">
+                tensorflow中一种融合多个模型的方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhuangzhouzhishui</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、审题"><span class="nav-number">1.</span> <span class="nav-text">一、审题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Kernels"><span class="nav-number">2.</span> <span class="nav-text">二、Kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、构建baseline"><span class="nav-number">3.</span> <span class="nav-text">三、构建baseline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、特征工程"><span class="nav-number">4.</span> <span class="nav-text">四、特征工程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-缺失值处理"><span class="nav-number">4.0.1.</span> <span class="nav-text">4.1 缺失值处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-类别特征"><span class="nav-number">4.0.2.</span> <span class="nav-text">4.2 类别特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-数值型特征"><span class="nav-number">4.0.3.</span> <span class="nav-text">4.3 数值型特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-日期特征"><span class="nav-number">4.0.4.</span> <span class="nav-text">4.4 日期特征</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#五、文本特征"><span class="nav-number">5.</span> <span class="nav-text">五、文本特征</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-挖掘文本特征"><span class="nav-number">5.0.1.</span> <span class="nav-text">5.1 挖掘文本特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-TF-IDF"><span class="nav-number">5.0.2.</span> <span class="nav-text">5.2 TF-IDF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-Word2Vec"><span class="nav-number">5.0.3.</span> <span class="nav-text">5.3 Word2Vec</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-Doc2Vec"><span class="nav-number">5.0.4.</span> <span class="nav-text">5.4 Doc2Vec</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、模型预测"><span class="nav-number">6.</span> <span class="nav-text">六、模型预测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-直接LightGBM-regression"><span class="nav-number">6.0.1.</span> <span class="nav-text">6.1 直接LightGBM-regression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-LightGBM-classification-regression"><span class="nav-number">6.0.2.</span> <span class="nav-text">6.2 LightGBM-classification-regression</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、Blending"><span class="nav-number">7.</span> <span class="nav-text">七、Blending</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuangzhouzhishui</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

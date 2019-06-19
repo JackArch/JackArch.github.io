@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CDH,Hadoop,部署,集群,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CDH集群离线搭建 朝花夕拾之–大数据平台CDH集群离线搭建 前言 部署步骤 网络配置（所有节点） 安装JDK（所有节点） 安装MySQL（主节点） 初始化MySQL（主节点） 部署/启动CM Server（主节点） 关闭防火墙（所有节点） 部署/启动CM Agent（从节点） 配置CDH   其他 停止集群步骤 启动集群步骤   题外话–论讲究    前言以Apache Hadoop为主导的大数">
+<meta name="keywords" content="CDH,Hadoop,部署,集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDH集群离线搭建">
+<meta property="og:url" content="http://JackArch.github.io/2015/04/12/150412_CDH集群离线搭建/index.html">
+<meta property="og:site_name" content="Deep  |  Mind">
+<meta property="og:description" content="CDH集群离线搭建 朝花夕拾之–大数据平台CDH集群离线搭建 前言 部署步骤 网络配置（所有节点） 安装JDK（所有节点） 安装MySQL（主节点） 初始化MySQL（主节点） 部署/启动CM Server（主节点） 关闭防火墙（所有节点） 部署/启动CM Agent（从节点） 配置CDH   其他 停止集群步骤 启动集群步骤   题外话–论讲究    前言以Apache Hadoop为主导的大数">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-18T19:20:48.222Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CDH集群离线搭建">
+<meta name="twitter:description" content="CDH集群离线搭建 朝花夕拾之–大数据平台CDH集群离线搭建 前言 部署步骤 网络配置（所有节点） 安装JDK（所有节点） 安装MySQL（主节点） 初始化MySQL（主节点） 部署/启动CM Server（主节点） 关闭防火墙（所有节点） 部署/启动CM Agent（从节点） 配置CDH   其他 停止集群步骤 启动集群步骤   题外话–论讲究    前言以Apache Hadoop为主导的大数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://JackArch.github.io/2015/04/12/150412_CDH集群离线搭建/">
+
+
+
+
+
+  <title>CDH集群离线搭建 | Deep  |  Mind</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep  |  Mind</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://JackArch.github.io/2015/04/12/150412_CDH集群离线搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhuangzhouzhishui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep  |  Mind">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CDH集群离线搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-04-12T11:39:21+08:00">
+                2015-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="CDH集群离线搭建"><a href="#CDH集群离线搭建" class="headerlink" title="CDH集群离线搭建"></a>CDH集群离线搭建</h2><ul>
+<li>朝花夕拾之–大数据平台CDH集群离线搭建<ul>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#_1" target="_blank" rel="noopener">前言</a></li>
+<li>部署步骤<ul>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#_3" target="_blank" rel="noopener">网络配置（所有节点）</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#jdk" target="_blank" rel="noopener">安装JDK（所有节点）</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#mysql" target="_blank" rel="noopener">安装MySQL（主节点）</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#mysql_1" target="_blank" rel="noopener">初始化MySQL（主节点）</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#cm-server" target="_blank" rel="noopener">部署/启动CM Server（主节点）</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#_4" target="_blank" rel="noopener">关闭防火墙（所有节点）</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#cm-agent" target="_blank" rel="noopener">部署/启动CM Agent（从节点）</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#cdh" target="_blank" rel="noopener">配置CDH</a></li>
+</ul>
+</li>
+<li>其他<ul>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#_6" target="_blank" rel="noopener">停止集群步骤</a></li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#_7" target="_blank" rel="noopener">启动集群步骤</a></li>
+</ul>
+</li>
+<li><a href="http://i.cnblogs.com/EditPosts.aspx?postid=4990484#-" target="_blank" rel="noopener">题外话–论讲究</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>以Apache Hadoop为主导的大数据技术的出现，使得中小型公司对于大数据的存储与处理也拥有了武器。目前Hadoop有不少发行版：华为发行版 <em>收费</em>、Intel发行版 <em>收费</em>、Cloudera发行版（Cloudera’s Distribution Including Apache Hadoop，简称 <strong>CDH</strong>）<em>免费</em>、Hortonworks发行版（Hortonworks Data Platform<br> ，简称 <strong>HDP</strong>）<em>免费</em> 等，所有这些发行版均是基于Apache Hadoop社区版衍生出来的。</p>
+<p>部署、管理拥有数十数百甚至更多节点的Hadoop集群，也需要先进武器。Hortonworks公司的Apache Ambari项目的目的就是通过软件来配置、监控和管理Hadoop（HDP）集群，以使Hadoop的管理更加简单。Ambari提供了一个基于它自身RESTful的api实现的直观的、简单易用的web界面。Cloudera公司也提供了类似的工具：Cloudera Manager（简称 <strong>CM</strong>）来配置、监控和管理CDH集群。</p>
+<p>本文主要内容即是本人早先搭建CDH集群之记录，故称作朝花夕拾。需特别注意的是Cloudera Manager与操作系统的版本关系 <em>el7暂不支持</em>，按照<a href="http://www.cloudera.com/content/www/en-us/documentation/enterprise/latest/topics/pcm_os.html" target="_blank" rel="noopener">官方文档</a>的要求来，否则安装会有问题。</p>
+<p>注意用户。<br> 本文是基于操作系统CentOS 6.5, 64-bit；Cloudera Manager 5.3.6；JDK 1.7 版本进行部署的。</p>
+<h2 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h2><h3 id="网络配置（所有节点）"><a href="#网络配置（所有节点）" class="headerlink" title="网络配置（所有节点）"></a>网络配置（所有节点）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh-server ~]# vi /etc/sysconfig/network #修改hostname:</span><br><span class="line">NETWORKING=yes</span><br><span class="line">HOSTNAME=cdh-server</span><br><span class="line">[root@cdh-server ~]# vi /etc/hosts #修改ip与主机名的对应关系:</span><br><span class="line">192.168.180.173 cdh-server</span><br><span class="line">192.168.180.175 node175</span><br><span class="line">[root@cdh-server ~]# service network restart #重启网络服务生效</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装JDK（所有节点）"><a href="#安装JDK（所有节点）" class="headerlink" title="安装JDK（所有节点）"></a>安装JDK（所有节点）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#卸载OpenJDK</span><br><span class="line">[root@cdh-server user1]# rpm -qa | grep java</span><br><span class="line">[root@cdh-server user1]# rpm -e --nodeps java-1.5.0-gcj-1.5.0.0-29.1.el6.x86_64</span><br><span class="line">[root@cdh-server user1]# rpm -e --nodeps java-1.6.0-openjdk-1.6.0.0-1.66.1.13.0.el6.x86_64</span><br><span class="line">[root@cdh-server user1]# rpm -e --nodeps java-1.7.0-openjdk-1.7.0.45-2.4.3.3.el6.x86_64</span><br><span class="line">#安装JDK</span><br><span class="line">[root@cdh-server user1]# chmod a+x jdk-7u79-linux-x64.rpm</span><br><span class="line">[root@cdh-server user1]# rpm -ivh jdk-7u79-linux-x64.rpm</span><br><span class="line">[root@cdh-server user1]# echo &quot;JAVA_HOME=/usr/java/jdk1.7.0_79/&quot; &gt;&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装MySQL（主节点）"><a href="#安装MySQL（主节点）" class="headerlink" title="安装MySQL（主节点）"></a>安装MySQL（主节点）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@cdh-server]$ cd /home/user1</span><br><span class="line">[user1@cdh-server]$ tar -zxvf mysql-5.6.26-linux-glibc2.5-x86_64.tar.gz</span><br><span class="line">[user1@cdh-server]$ mv mysql-5.6.26-linux-glibc2.5-x86_64 mysql-5.6.26</span><br><span class="line">[user1@cdh-server]$ cd mysql-5.6.26/</span><br><span class="line">[user1@cdh-server]$ vi support-files/my.cnf #新建文件</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br><span class="line">[mysqld]</span><br><span class="line">character-set-server=utf8</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line"># Uncomment the following if you are using InnoDB tables</span><br><span class="line">innodb_data_home_dir = /home/user1/mysql-5.6.26/data</span><br><span class="line">innodb_data_file_path = ibdata1:10M:autoextend</span><br><span class="line">innodb_log_group_home_dir = /home/user1/mysql-5.6.26/data</span><br><span class="line"># You can set .._buffer_pool_size up to 50 - 80 %</span><br><span class="line"># of RAM but beware of setting memory usage too high</span><br><span class="line">innodb_buffer_pool_size = 16M</span><br><span class="line">innodb_additional_mem_pool_size = 2M</span><br><span class="line"># Set .._log_file_size to 25 % of buffer pool size</span><br><span class="line">innodb_log_file_size = 5M</span><br><span class="line">innodb_log_buffer_size = 8M</span><br><span class="line">innodb_flush_log_at_trx_commit = 1</span><br><span class="line">innodb_lock_wait_timeout = 50</span><br><span class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="初始化MySQL（主节点）"><a href="#初始化MySQL（主节点）" class="headerlink" title="初始化MySQL（主节点）"></a>初始化MySQL（主节点）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user1@cdh-server]$ ./scripts/mysql_install_db --defaults-file=/home/user1/mysql-5.6.26/support-files/my.cnf --basedir=/home/user1/mysql-5.6.26 --datadir=/home/user1/mysql-5.6.26/data --user=user1</span><br><span class="line">[user1@cdh-server]$ ./bin/mysqld --defaults-file=/home/user1/mysql-5.6.26/support-files/my.cnf --basedir=/home/user1/mysql-5.6.26 --datadir=/home/user1/mysql-5.6.26/data &gt; mysql.log 2&gt;&amp;1 &amp;</span><br><span class="line">[user1@cdh-server]$ ./bin/mysqladmin -u root password &apos;123456&apos;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[user1@cdh-server mysql-5.6.26]$ ./bin/mysql -uroot -p&apos;123456&apos;</span><br><span class="line">#hive</span><br><span class="line">mysql&gt; create database hive DEFAULT CHARSET utf8 COLLATE utf8_general_ci;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">#Activity Monitor使用</span><br><span class="line">mysql&gt; create database amon DEFAULT CHARSET utf8 COLLATE utf8_general_ci;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line">#Navigator Audit Server使用</span><br><span class="line">mysql&gt; create database audit DEFAULT CHARSET utf8 COLLATE utf8_general_ci;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line">#Navigator Metadata Server</span><br><span class="line">mysql&gt; create database metadata DEFAULT CHARSET utf8 COLLATE utf8_general_ci;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line">mysql&gt; grant all privileges on *.* to &apos;root&apos;@&apos;localhost&apos; identified by &apos;123456&apos; with grant option;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">mysql&gt; grant all privileges on *.* to &apos;root&apos;@&apos;cdh-server&apos; identified by &apos;123456&apos; with grant option;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">#this user scm is for cloudera manager</span><br><span class="line">mysql&gt; grant all privileges on *.* to &apos;scm&apos;@&apos;localhost&apos; identified by &apos;scm&apos; with grant option;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">mysql&gt; grant all privileges on *.* to &apos;scm&apos;@&apos;cdh-server&apos; identified by &apos;scm&apos; with grant option;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="部署-启动CM-Server（主节点）"><a href="#部署-启动CM-Server（主节点）" class="headerlink" title="部署/启动CM Server（主节点）"></a>部署/启动CM Server（主节点）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[user1@cdh-server ~]$ tar -zxvf cloudera-manager-el6-cm5.3.6_x86_64.tar.gz</span><br><span class="line">[user1@cdh-server ~]$ cp mysql-connector-java-5.1.33-bin.jar ./cm-5.3.6/share/cmf/lib/</span><br><span class="line">[user1@cdh-server ~]$ su - root</span><br><span class="line">[root@cdh-server ~]# cd /home/user1/</span><br><span class="line">[root@cdh-server user1]# cp -rf cloudera /opt</span><br><span class="line">[root@cdh-server user1]# mv CDH-5.3.6-1.cdh5.3.6.p0.11-el6.parcel /opt/cloudera/parcel-repo/CDH-5.3.6-1.cdh5.3.6.p0.11-el6.parcel</span><br><span class="line">[root@cdh-server user1]# mv CDH-5.3.6-1.cdh5.3.6.p0.11-el6.parcel.sha /opt/cloudera/parcel-repo/CDH-5.3.6-1.cdh5.3.6.p0.11-el6.parcel.sha</span><br><span class="line">[root@cdh-server user1]# mv manifest.json /opt/cloudera/parcel-repo/manifest.json</span><br><span class="line">[root@cdh-server user1]# ./cm-5.3.6/share/cmf/schema/scm_prepare_database.sh mysql cm -hlocalhost:3306 -uroot -p123456 --scm-host localhost scm scm scm</span><br><span class="line">[root@cdh-server user1]# ./cm-5.3.6/etc/init.d/cloudera-scm-server start</span><br><span class="line">Starting cloudera-scm-server: [ OK ]</span><br><span class="line">[root@cdh-server user1]# tail -f ./cm-5.3.6/log/cloudera-scm-server/cloudera-scm-server.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="关闭防火墙（所有节点）"><a href="#关闭防火墙（所有节点）" class="headerlink" title="关闭防火墙（所有节点）"></a>关闭防火墙（所有节点）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#停止iptables</span><br><span class="line">[root@cdh-server user1]# service iptables stop</span><br><span class="line">#通过浏览器访问验证</span><br><span class="line">http://192.168.180.173:7180/</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="部署-启动CM-Agent（从节点）"><a href="#部署-启动CM-Agent（从节点）" class="headerlink" title="部署/启动CM Agent（从节点）"></a>部署/启动CM Agent（从节点）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh-server user1]# tar -zxvf cloudera-manager-el6-cm5.3.6_x86_64.tar.gz</span><br><span class="line">[root@cdh-server user1]# vi cm-5.3.6/etc/cloudera-scm-agent/config.ini</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br><span class="line"># Hostname of the CM server.</span><br><span class="line">#server_host=localhost</span><br><span class="line">server_host=cdh-server</span><br><span class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh-server user1]# useradd -G sys --home=/home/user1/cm-5.3.6/run/cloudera-scm-server --no-create-home --comment &quot;Cloudera SCM User&quot; cloudera-scm</span><br><span class="line">[root@cdh-server user1]# useradd --comment &quot;Cloudera SCM User&quot; cloudera-scm #若上一步执行正确，则此步省略</span><br><span class="line">[root@cdh-server user1]# echo 0 &gt; /proc/sys/vm/swappiness</span><br><span class="line">[root@cdh-server user1]# ./cm-5.3.6/etc/init.d/cloudera-scm-agent start</span><br><span class="line">Starting cloudera-scm-agent: [ OK ]</span><br><span class="line">[root@cdh-server user1]# tail -f ./cm-5.3.6/log/cloudera-scm-agent/cloudera-scm-agent.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置CDH"><a href="#配置CDH" class="headerlink" title="配置CDH"></a>配置CDH</h3><p>登陆Cloudera Manager <a href="http://192.168.180.173:7180/" target="_blank" rel="noopener">http://192.168.180.173:7180/</a>，并新建集群Cluster_user1，进行各服务的配置启动。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#安装配置hive出错时，在hiveServer上:</span><br><span class="line">[root@hive-server user1]# cp mysql-connector-java-5.1.33-bin.jar /opt/cloudera/parcels/CDH-5.3.6-1.cdh5.3.6.p0.11/lib/hive/lib/</span><br><span class="line">#同理：use this jar for Navigator Audit Server and Navigator Metadata Server or Activity Server</span><br><span class="line">[root@cdh-server user1]# cp mysql-connector-java-5.1.33-bin.jar /usr/share/java/mysql-connector-java.jar</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="停止集群步骤"><a href="#停止集群步骤" class="headerlink" title="停止集群步骤"></a>停止集群步骤</h3><ul>
+<li><p>停止Cloudera Management Service和Cluster_user1</p>
+</li>
+<li><p>从节点停止Agent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh-server user1]# ./cm-5.3.6/etc/init.d/cloudera-scm-agent stop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>主节点停止Server</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh-server user1]# ./cm-5.3.6/etc/init.d/cloudera-scm-server stop</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="启动集群步骤"><a href="#启动集群步骤" class="headerlink" title="启动集群步骤"></a>启动集群步骤</h3><ul>
+<li><p>主节点启动MySQL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[user1@cdh-server]$ ./bin/mysqld --defaults-file=/home/user1/mysql-5.6.26/support-files/my.cnf --basedir=/home/user1/mysql-5.6.26 --datadir=/home/user1/mysql-5.6.26/data &gt; mysql.log 2&gt;&amp;1 &amp;</span><br><span class="line">     [user1@cdh-server]$ ps -a | grep mysql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从节点启动Agent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh-server user1]# ./cm-5.3.6/etc/init.d/cloudera-scm-agent start</span><br><span class="line">     Starting cloudera-scm-agent: [ OK ]</span><br><span class="line">     [root@cdh-server user1]# tail -f ./cm-5.3.6/log/cloudera-scm-agent/cloudera-scm-agent.log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>主节点启动Server</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@cdh-server user1]# ./cm-5.3.6/etc/init.d/cloudera-scm-server start</span><br><span class="line">     Starting cloudera-scm-server: [ OK ]</span><br><span class="line">     [root@cdh-server user1]# tail -f ./cm-5.3.6/log/cloudera-scm-server/cloudera-scm-server.log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动各服务</p>
+<pre><code>登陆Cloudera Manager &lt;http://192.168.52.173:7180/&gt;，进行各服务的检查启动。</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CDH/" rel="tag"># CDH</a>
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+            <a href="/tags/部署/" rel="tag"># 部署</a>
+          
+            <a href="/tags/集群/" rel="tag"># 集群</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/06/150306_PageRank算法及Map-Reduce实现/" rel="next" title="PageRank算法及Map-Reduce实现">
+                <i class="fa fa-chevron-left"></i> PageRank算法及Map-Reduce实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/05/22/150522_Spark大数据处理的核心机制/" rel="prev" title="Spark大数据处理的核心机制">
+                Spark大数据处理的核心机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhuangzhouzhishui</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CDH集群离线搭建"><span class="nav-number">1.</span> <span class="nav-text">CDH集群离线搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署步骤"><span class="nav-number">3.</span> <span class="nav-text">部署步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络配置（所有节点）"><span class="nav-number">3.1.</span> <span class="nav-text">网络配置（所有节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装JDK（所有节点）"><span class="nav-number">3.2.</span> <span class="nav-text">安装JDK（所有节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装MySQL（主节点）"><span class="nav-number">3.3.</span> <span class="nav-text">安装MySQL（主节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化MySQL（主节点）"><span class="nav-number">3.4.</span> <span class="nav-text">初始化MySQL（主节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署-启动CM-Server（主节点）"><span class="nav-number">3.5.</span> <span class="nav-text">部署/启动CM Server（主节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭防火墙（所有节点）"><span class="nav-number">3.6.</span> <span class="nav-text">关闭防火墙（所有节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署-启动CM-Agent（从节点）"><span class="nav-number">3.7.</span> <span class="nav-text">部署/启动CM Agent（从节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置CDH"><span class="nav-number">3.8.</span> <span class="nav-text">配置CDH</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#停止集群步骤"><span class="nav-number">4.1.</span> <span class="nav-text">停止集群步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动集群步骤"><span class="nav-number">4.2.</span> <span class="nav-text">启动集群步骤</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuangzhouzhishui</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

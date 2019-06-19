@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大数据,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="0，大数据知识背景。 ​    在我第一次接触大数据的时候，那个故事便是“啤酒和尿布”。  是美国沃尔玛超市的一则营销案例。每到周末的时候，啤酒和尿片的销量很高，经分析，原来是周末电视转播球赛，男人们要一边喝酒一边看球，受冷落的妻子们只好出门逛街或找闺蜜吐槽，照顾孩子的任务自然就归了男人们。于是，男人们在买啤酒的同时随手买尿片。超市把啤酒和尿片放到一起，自然就提高了销量。还有一些案例，如googl">
+<meta name="keywords" content="大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于大数据的银行反欺诈的分析报告">
+<meta property="og:url" content="http://JackArch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/index.html">
+<meta property="og:site_name" content="Deep  |  Mind">
+<meta property="og:description" content="0，大数据知识背景。 ​    在我第一次接触大数据的时候，那个故事便是“啤酒和尿布”。  是美国沃尔玛超市的一则营销案例。每到周末的时候，啤酒和尿片的销量很高，经分析，原来是周末电视转播球赛，男人们要一边喝酒一边看球，受冷落的妻子们只好出门逛街或找闺蜜吐槽，照顾孩子的任务自然就归了男人们。于是，男人们在买啤酒的同时随手买尿片。超市把啤酒和尿片放到一起，自然就提高了销量。还有一些案例，如googl">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160703.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160704.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160705.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160706.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160707.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160708.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160709.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160710.jpg">
+<meta property="og:updated_time" content="2019-06-19T11:57:21.119Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于大数据的银行反欺诈的分析报告">
+<meta name="twitter:description" content="0，大数据知识背景。 ​    在我第一次接触大数据的时候，那个故事便是“啤酒和尿布”。  是美国沃尔玛超市的一则营销案例。每到周末的时候，啤酒和尿片的销量很高，经分析，原来是周末电视转播球赛，男人们要一边喝酒一边看球，受冷落的妻子们只好出门逛街或找闺蜜吐槽，照顾孩子的任务自然就归了男人们。于是，男人们在买啤酒的同时随手买尿片。超市把啤酒和尿片放到一起，自然就提高了销量。还有一些案例，如googl">
+<meta name="twitter:image" content="http://jackarch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/pic/160703.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://JackArch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/">
+
+
+
+
+
+  <title>基于大数据的银行反欺诈的分析报告 | Deep  |  Mind</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep  |  Mind</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://JackArch.github.io/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhuangzhouzhishui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep  |  Mind">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于大数据的银行反欺诈的分析报告</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-22T15:24:18+08:00">
+                2016-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>0，大数据知识背景。</p>
+<p>​    在我第一次接触大数据的时候，那个故事便是“啤酒和尿布”。</p>
+<p> 是美国沃尔玛超市的一则营销案例。每到周末的时候，啤酒和尿片的销量很高，经分析，原来是周末电视转播球赛，男人们要一边喝酒一边看球，受冷落的妻子们只好出门逛街或找闺蜜吐槽，照顾孩子的任务自然就归了男人们。于是，男人们在买啤酒的同时随手买尿片。超市把啤酒和尿片放到一起，自然就提高了销量。还有一些案例，如google对流感病毒散布的预测，如洛杉矶警察局对犯罪的预测，乃至对机票价格波动的预测，对天气的预测，这都是大数据的范畴。从这些案例都能看出，<strong>大数据的核心精髓所在，关联、预测、增值。</strong></p>
+<p>​       那么，银行的反欺诈也是一个预测行为。现在利用大数据来做欺诈的预测也是一个很好地思路。当然，据我的调查数据，目前不少公司都已经开始了这样的业务。</p>
+<p> 1，银行反欺诈的机器学习方面知识整理。</p>
+<p>​     无监督算法主要是针对交易模式进行的离群点挖掘，各种技术都有，基于距离、基于密度、基于深度、基于概率、……，但万变不离其宗，都需要通过距离计算来确定点与点之间的相似性，以此判断哪些点属于相对孤立的点。离群点挖掘优点是对任何异常模式都较为灵敏，缺点是噪声大，误判率高，无法确定是何种欺诈类型。</p>
+<p>​     有监督算法主要是cart分类树、ann、RBR/CBR技术等，需要从真实案件中提炼关键特征，训练模型，并进行测试。有监督算法的优点是能一案一模型，指向明确，效率很高，缺点是无法识别未知类型欺诈，未加训练的话，碰到新情况就只能抓瞎。<br>目前国内支付宝的风险策略引擎做得不错，前段时间他们还发过一篇吹嘘他们所谓“6维度综合智能判断”风险策略引擎的文章，居然在微信朋友圈里也传的很火，足见其影响力。国际上较为领先的是paypal，据说已经初步具备人工智能判断了，风险判断策略开发得较为完备。<br>​    所有算法从开发主体看都可分为工程师算法和科学家算法，对于工程师而言，算法都有现成的，关键在于如何与公司业务流程紧密结合，结合得越好，即便最简单的聚类算法也能产生巨大威力，结合不好，光是深入钻研算法里边的奇技淫巧其实是徒劳无功的；对于科学家而言，需要充分借助数学不断拓展算法效率的可能性边界，讲求特定算法普适意义上的性能提升，对于特定公司的具体情况一般不予考虑，这类典型例子是hinton，他几乎是重新发明了ann。<br>我们大多数人都只能做到工程师算法设计，比如特征调参、已有算法并行与串行组合、数据预处理、…等，少数天赋较高、科研条件优裕且耐得住寂寞的高手，可以从事科学家算法研发，不过这是一条极为枯燥且充满风险的道路。<br>最后但并非不重要的是，对于工程师而言：反欺诈算法要真正发挥作用，你的业务直觉至关重要，只有具备良好的业务洞察力——仅基于对数据简单的描述统计就能粗略预估出合适的检测流程与步骤——你才能在各类复杂模型中准确选择最合适的模型。没有良好的业务洞察力与直觉，没有对数据形状天然的敏感，你对算法的选择很可能要么只停留在很粗糙的层面（既做不好特征调参，也做不好算法组合），要么迷失在汗牛充栋长篇累牍的算法文献中无所适从。总之，业务洞察力与数据敏感性是数据科学家最重要的品质，需要经过一万小时不懈的刻意练习才能修炼成。</p>
+<p>​     <strong>所以，我个人觉得，无数据的时候利用无监督算法会比较好的解决了这个问题。</strong></p>
+<p>​     </p>
+<p>​     2，反欺诈的信息收集</p>
+<p>​    （1）可以以说目前的互联网反欺诈离不开文本挖掘，最重要的是语义识别。但是被突破的门槛小，投入比较大。做到一定程度准确率提升会极其困难。其次重要的是图像的挖掘，包括OCR识别图像文字、相似图片、黄反图片等等。但是跟文本挖掘的问题几乎一样，极易遇到瓶颈。机器学习，数据挖掘等是大招，当对不良内容其他的方式都难以识别的时候用机器学习的方式效果最好，机器学习的本质其实是多维度多规则的组合。缺点是见效慢，维护成本大，样本的收集工作量大等等，但是一旦机器学习到达一定程度是最好的反欺诈手段。但是以上说的都是“术”，都是被动的去处理问题。而真正想把反欺诈做好需要的是“道”。也就是产品模式的突破，信用体系的搭建，从源头使欺诈的门槛高于欺诈的收益，才会最终杜绝欺诈。这也就是反欺诈领域里所有人努力的目标。 </p>
+<p>​    （2）做金融反欺诈的公司和模型。</p>
+<p>​     申请欺诈:GBG DecTech，算话征信，同盾，芝麻信用，百融金服等都有自己的反欺诈服务系统，通常的规则包括黑名单，身份信息是否一致，同一设备、IP、手机等是否进价量大的规则。<br>​     交易欺诈:Falcon、PRM等系统，规则通常是短时间频繁交易，大额交易，补卡盗刷等。</p>
+<p>​    </p>
+<p>​     （3）深度挖掘用户的信息。</p>
+<p>​       1.前端：信息验真</p>
+<p>​       很简单，通过身份验真、实名认证判断是否本人；填写个人资料是否真实，本人手机号码，真实常用联系人信息（通过和电商消费购物数据交叉地址还能得出常用联系人地址），等等   </p>
+<p>​       2.贷中：信息补全&amp;交叉验证： </p>
+<p>​       通过支付数据、消费数据、金融数据、社交数据、移动端数据和运营数据等，运用先进的大数据和机器学习算法，能深度挖掘用户的个人身份基本信息、收入支出信息、兴趣爱好、个人影响力、社会关系等并形成相关分析报告。</p>
+<p>​       3,基于大数据的互联网金融反欺诈—-神经网络</p>
+<p>​      从前些年爆炒大数据，到目前提到大数据许多业内的朋友都会报以不屑的表情，这源于数据，特别是原来的数理统计被过分的渲染，金融行业的发展，本质也是信息技术的发展，我始终相信科技进步的力量，也相信科技是可以不断改进金融的</p>
+<p>目前比较火的互金领域，简单的说，我认为互联网金融的本质在于金融，特别是P2P网站的资产端，究其实质仍然是小额信贷，传统的信贷风险管理一定程度上是适用于互金的。最近几十年随着计算机技术的发展，也随着数据挖掘和机器学习的不断的发展，新的反欺诈和信用评分技术一直在不断进步，本文我会简单介绍一下目前投入生产环境的技术和手段，也算是对近期的工作学习做一个简单的总结。</p>
+<p>​      事实上小额信贷风险管理，本质上是事前对风险的主动把控，尽可能预测和防范可能出现的风险。为了满足业务的需求，我们会使用大量数据，建立相应模型，衡量风险并尽可能避免逾期，一般通过对授信人个人状况、收入能力、负债情况进行数据挖掘，进行模型化综合度量，进而确定授信对象的额度，并确定一个合理的风险定价，使风险和盈利达到一个平衡的状态。</p>
+<p>很明显，一般互金公司做的信贷业务（一般p2p公司都无法获得类似银行的优质债权）随着信贷业务不断发展，高端客户无法获取，必然面临授信群体向着普通人群甚至是高风险人群的渗透，必然导致客户质量的参差不齐。信用风险、欺诈风险等都随之迅速上升</p>
+<p>如果依托传统的信贷技术，事实上只能对存量市场做精耕，但是如果能结合一些新的数据源（特别是一个人的网上记录包括社交、交易行为、消费习惯等），一来可以有效的降低风险，其次对新客的拓客有着意想不到的效果（啤酒和尿布）。所以数据挖掘在当前数据大爆炸的时代就具有举足轻重的作用，也成了业内竞争的强力武器，降低坏账逾期的重要手段。</p>
+<p>说起来很简单，但任何的技术进步，无一不是通过一次次的试错完成的。一般而言，不管是任何一种欺诈，归根到底，都是通过欺诈性地申请实现的。反欺诈策略实质就是探讨挖掘和模型技术来预测欺诈的概率。为企业发现和拒绝欺诈性交易提供科学依据</p>
+<p>一个优秀的评分模型一定是基于统计分析技术的，可以准确和实时的进行风险评估，通过内部的模型更新增强对新的诈模式的适应能力，并通过分析各类人群的行为特征模式，利用先进的数理统计技术，进行深度的数据挖掘，不断修正风险决策模型，对审批、还款管理、催款等各个流程进行科学有效的管理，将风险控制在合理范围内。</p>
+<p>据我所知，目前银行业对于信贷风险的常见评级方法之一是通过打分法来进行的。即基于业内长期经验，从众多风险的指标中选择若干指标，并对各个指标给予适当的权重水平，设定各个指标具体数值。进而将授信对象的具体数据代入评级体系中，分析各个指标的打分情况。</p>
+<p>事实上，指标体系的设计本身是一个十分复杂的系统。在打分时，对于设定各指标权重大小以及每一项指标的分数并没有十分标准的依据，依靠经验确定指标的权重，参杂人为的经验，主观因素较突出，这种主观意见确定权重形成的评级办法在科学性与客观性方面都存在问题，影响了评级结果的准确性，在主观因素的引导下，加重了风险，也会造成不必要的损失</p>
+<p>这里有要介绍另一种基于机器学习和算法的反欺诈评分模型，既神经网络模型。基于神经网络的评分模型在当前的数据挖掘过程中具有特殊的地位，它能够使模型在不断的学习中逐步成长。本文会大致介绍将神经网络的数据挖掘方法应用于小额信贷数据的过程，探索适用于互金的信用风险评判的模型。</p>
+<p>神经网络是一种通过模仿人脑信息，类似于大脑神经突触联接的结构加工过程的智能化信息处理技术及进行信息处理的数学模型，与博弈论中的动态博弈很相似，具有自适应性、自组织性以及较强劲的稳健性，在应用过程中具有很强的鲁棒性和容错性，能够并行处理方法，具有自学习性。拥有自组织、自适应性和很强的信息综合能力等良好性能，能同时处理定量和定性的信息，能很好的协调多种输入信息关系，适用于处理复杂非线性和不确定对象，能成功的应用于多种不同的信息处理。</p>
+<p>这里引用一张信用评分模型中的图说明。</p>
+<p><img src="./pic/160703.jpg" alt></p>
+<p>一个神经元可以有任意n个输入</p>
+<p>我们将输入参数记作：x1, x2, x3, x4, x5, …, xn</p>
+<p>同样n个权重可表达为：w1, w2, w3, w4, w5 …, wn</p>
+<p>简单的说，激励值就是所有输入与它们对应权重的之乘积之总和</p>
+<p>因此，现在就可以写为: y = w1x1 + w2x2 + w3x3 + w4x4 + w5x5 +…+ wnxn</p>
+<p>神经网络经过一系列的输入及加权计算，得到输出数据，即欺诈风险评分。</p>
+<p>网络可以在真实的数据集环境中学习，通过不断地学习过程提高效率，交互式的调整其连接权重，每增加一次学习过程，网络对真实数据集的环境就更加了解一些，学习是一个过程，在此过程中，神经网络的参数会随着所处环境的变化自动进行调整</p>
+<p>当所有用于估计模型的训练集样本误差达到最小时，模型就建立了，即拟合成了神经网络模型，隐含的神经网络模型决定属性的分类规则。根据需求把新的属性转换为相应的数据代入模型，便可以得到所属的分类以及相应的概率</p>
+<p>最初神经网络具有结构较复杂、训练时间长、可解释性比较差等缺陷，所以在数据挖掘的分类技术应用中不是很被看好，但神经网络技术具有低错误率，能够承受噪声数据的能力，以及经过不断优化神经网络训练算法，尤其是不断完善很多网络剪枝算法和规则提取算法，使得神经网络算法在数据挖掘分类技术中的应用越来越被接受及认可。</p>
+<p>当然，神经网络的信用评级模型是对现存的评级方法的一种改良，而非现存评级方法的完全替代，一个完备的评级体系既要避免主观的陷阱，也要避免统计的陷阱，因而神经网络模型本身是希望通过定量分析，为认为审核判断提供一定依据，而不仅仅依靠个人经验</p>
+<p>事实上我认为，由于神经网络的黑盒性质，从一定程度上牺牲了模型的可解释性，比之逻辑回归、决策树，解释性显得并不是特别的强等一些缺陷。</p>
+<p>4，先进的银行反欺诈的设计。</p>
+<p>最近发生很多起网络资金账户被盗事件，绝大多数集中在互联网金融公司，我在某爷理财APP上的四万多理财资金也全部被盗，痛心棘手（当事人无参与），并明显感觉到了互联网金融产品的安全性缺失，大众也纷纷要求提现，导致多家互联网金融公司被挤兑处在死亡边缘。</p>
+<p>但是反观银行业，如果自己不参与（不签字、不泄漏密码、不同意复制手机卡），没有人的银行账户能被盗，即使银行内部员工内外勾结也不能动客户一分钱，就像最近发生的40亿同业欺诈案，内外行家小心配合也依然无法通过银行的反欺诈拦截。为了你的钱和我的钱，为了让那些优秀的互联网金融公司活下去，我们今天就来探讨一下银行的反欺诈是如何设计的。</p>
+<p>十年前我在黑客防线和黑客X档案陆续发表《徒手搞定整个机房》、《徒手对抗驱动级病毒》等安全类文章的那段时间，是国内个人电脑安全最动荡的日子，随便一个会点鼠标的网民随便下载几个工具就可以号称黑客干点恶作剧，后来杀出个周鸿祎采用流氓卫士辅以收编各路红黑高手的手段，才让网络安全的话题逐渐的回归了平淡。</p>
+<p>随后几年，平静的网络环境给了人们足够的安全感，接着网络实行实名制，各大网站纷纷实名社交，之前游离在编制外的各路黑神逐渐将注意力转移到各大网站，并将脱裤（下载用户数据库）获得的用户数据转为经济利益，由于这些数据包含大量真实个人信息，它可以作为社工猜解的输入条件对用户其它信息一一破解，对于不能直接转为经济效益的用户信息便通过黑市直接转手卖给各路电信诈骗分子，诈骗分子通过逐一分析用户信息有针对性的制定诈骗方案，并辅以完整配套设施“官方网站”、“官方400电话”等，略施小计如“您儿子出车祸了”、“恭喜您中奖了”、“到我办公室来一趟”等即可拿下很多人，因为对方知道你所有的信息，包括姓名、住址、身份证号码、在哪里读过书、在哪里工作、领导是谁、买过什么东西、去过那里、和谁开过房、甚至包括你家人和朋友的这些信息，当你去网络求证对方是不是在诈骗时，百度会告诉你对方说的是真的（骗子预先在百度付费推广诈骗信息，比如公司的电话等）。</p>
+<p>诈骗分子实施这一系列的动作有两个目的，一是直接拿到你的钱，二是退而求其次拿到存钱的账户，实现的手段有四类：要求转账、柜台签字、获取密码、手机号复制。诈骗分子使用以上手段达到这两个目的过程称为社会工程学诈骗，这种诈骗的存在是互联网金融安全薄弱的根本原因，各大银行在过去许多年与骗子的较量中已经总结出了一套识别真正用户以及真实交易的一整套方案，这是现在各大互联网公司最缺少的，尤其是互联网金融公司，因为很多互联网金融公司还停留在使用用户外在信息识别用户身份的低级方案，甚至对交易真实性根本没有做任何检查，诈骗分子闭着眼睛随便捏一个公司出来也能获得丰厚的回报，这也导致现在诈骗分子非常泛滥还活的十分滋润的一个原因。而这一切，不是用户的智商让我们措手不及，是我们系统设计的让用户措手不及。 </p>
+<p>先举两个真实案例，第一个就是发生在我身上的，我存在某互联网金融公司某爷的四万多理财资金在一个周五晚上十点的一个小时内全部被盗，我的账户被别人在异地使用新手机登录并修改了登录密码、支付密码、更换了我绑定的银行卡、并额外绑定了三张别人的银行卡，这期间我无法重置支付密码、无法解绑银行卡、无法冻结账户、打客服提示已下班，束手无策，只有绝望。这个过程中发生了多少敏感操作，而我的手机没有收到一条变更确认的短信和变更成功后的通知，只有最后收到一条我的账户被提现到某某卡的通知（完整的详细过程可以翻看我公众号里的那篇《财神爷爷资金被盗是内鬼还是外患》），从这个过程就可以看出这家公司居然没有用户身份真伪识别的机制，更别说交易真实性识别了，完全就是拿着用户的钱在网上裸奔，谁能在旁边说出钱是谁的钱就给谁，作为一家金融公司这样实在是让人震惊。</p>
+<p>第二个案例是发生在银行间市场，有个人通过向A银行购买十万理财产品的方式获取了A银行的理财产品说明书、协议书、税务登记证、营业执照、组织机构代码证、客户权益须知等文件，并以个人名义存入2000万以取得A银行贵宾室的使用权，然后冒充A银行工作人员利用A银行的贵宾室，向B银行高息兜售该理财产品，连续多天在A银行的表演和略施小计骗过了B银行的审核人员，从而卖出了一份40亿的理财资金，但是这笔交易被B银行的反欺诈侦测列入了风险监控列表，经过人工审核确认后堵截了这起诈骗事件（详细过程可查看银监会安徽监管局发的2016第55号文件）。对比B银行该案例中表现出来的反欺诈侦测能力，某互联网金融公司的做法就是在作死，互联网金融公司安全能力的提升迫在眉睫也任重道远。</p>
+<p>互联网金融公司想要提升自己的安全能力，最好的学习榜样就是银行，而全球范围内率先实现企业级反欺诈管控体系的是美国银行和富国银行，他们在这方面有些非常优秀的设计经验值得学习，现在我们就开始探讨他们在企业级架构下的反欺诈是如何设计的。一般概念下的欺诈分内部欺诈和外部欺诈，它属于风险管控中操作风险管理的一部分。在操作风险管理中除了欺诈外还管理就业制度和工作场所安全事件、客户/产品和业务活动事件、实物资产损坏事件、信息科技系统事件、执行/交割和流程管理事件，今天我们主要探讨欺诈这部分。在外部欺诈中主要有三类欺诈：当事人欺诈、第三方欺诈以及人行要求检查的洗钱欺诈，内部欺诈主要有未经授权的行为与盗窃。对于欺诈的防控分事前防控、事中防控与事后防控，并在以下层面进行防控：</p>
+<blockquote>
+<p>外部渠道层：重点侦测交易发生前的客户接入、会话可疑行为；交易发生中的交易对手是否在可疑欺诈名单。</p>
+<p>内部渠道层：重点侦测业务违规与可疑操作。</p>
+<p>产品服务层：重点侦测产品服务内的欺诈交易，跨产品的欺诈交易。</p>
+<p>数据集成层：重点侦测跨产品、渠道的组合/复杂欺诈交易。</p>
+</blockquote>
+<p>这些不同的层侧重防控的欺诈行为不一样，其侦测逻辑也不一样，渠道层可能侦测以下行为：</p>
+<p>异地更换网银盾后首次进行大额转账，这可能是客户的信息已泄露，这种交易需要挂起，并需要打电话给客户进行核实。</p>
+<p>客户通过手机或网银渠道向黑名单收款账户转账，被阻断交易后，当天该账户又向其它账户进行大额转账，这可能是客户账户被盗或被电信诈骗分子利用社会工程学的手段实施了诈骗，这种交易需要挂起，并需要打电话给客户进行核实。</p>
+<p>异地升级网银盾后首次进行大额转账，这可能是客户身份被盗用，身份证、登录密码等已泄露，这种交易需要挂起，并需要打电话给客户进行核实。</p>
+<p>新开通的网银客户进行大额转账，这可能是客户被电信诈骗分子利用社会工程学的手段实施了诈骗，这种交易需要挂起，并需要打电话给客户进行核实。</p>
+<p>用户登录所使用的设备指纹（MAC地址、IP、主板序列号、硬盘序列号）、登录时间、设备所在地，与其常用的对应信息不一致，这可能是客户账户已被盗用，这种情况需要进行人工核实。</p>
+<p>产品层可能侦测以下行为：</p>
+<blockquote>
+<p>1、 进入黑名单商户的交易，对于已支付未确认付款的交易需要实施冻结，防止资金流入该商户。</p>
+<p>2、 根据客户的投诉确认商户是否存在虚假交易，如果是也需要实施冻结。</p>
+<p>3、 如果同卡同天当笔交易为上一笔的倍数，这可能是客户账户被盗用，这种交易需要挂起，并人工进行核实。</p>
+<p>4、 如果同卡同商户同金额，这可能是商户正在配合客户套现，这种交易需要人工核实。</p>
+<p>5、 如果同卡同商户五分钟内交易超限，这可能是在进行虚假交易，这种交易需要人工核实。</p>
+<p>6、 如果对公客户的交易额不在其合理的范围内（通过其注册资本、代发代付的累计额等评估的范围），这种交易可能需要拒绝并人工进行调查。</p>
+<p>7、 如果使用伪卡进行交易，此后该商户发生的交易可能都需要阻断或告警。</p>
+</blockquote>
+<p>客户层可能侦测以下行为：</p>
+<blockquote>
+<p>1、 特定年龄段客户以往习惯在非柜面进行小额交易，突然第一笔发生大额转账，这可能是账户被盗，需要进行人工调查。</p>
+<p>2、 客户账户多日连续多笔密码验证错误，尝试成功后就进行转账操作，这可能是账户被盗，其发起的交易可能需要被阻断，该客户使用的其他产品可能均需要挂起，并进行人工核实处理。</p>
+<p>3、 同一个客户的一个或多个产品短时间内在不同地区/国家使用，这可能是客户的卡被复制存在伪卡，这种交易需要人工核实处理。</p>
+<p>4、 在一定时间内，同一个客户在特定高风险国家发生多笔或进行大额交易，这可能是伪卡，这种交易需要人工核实处理。</p>
+</blockquote>
+<p>可能需要通过对客户和员工的不同纬度外部欺诈、内部欺诈风险及黑名单信息的分类评估，实现对客户欺诈风险的联合防控，它们之间的风险关系梳理如下：</p>
+<p><img src="./pic/160704.jpg" alt></p>
+<p>如果我们要在防控的前、中、后三个阶段都要对各个产品的多个纬度进行统一欺诈防控与处理，那么我们需要基于他们整体建立一套防控体系，通过整理并抽象总结前面提出的侦测行为，我们将它需要实现的目标梳理如下：</p>
+<blockquote>
+<p>1、 应该具有统一的数据集市。</p>
+<p>2、 应该具有统一的数据采集、加工过程。</p>
+<p>3、 应该具有统一的侦测策略定义过程。</p>
+<p>4、 应该具有统一的基于流程引擎的侦测问题流转管理。</p>
+<p>5、 应该具有统一的基于流程引擎的案件管理，记录、跟踪、评估、回顾相关的处理过程。</p>
+<p>6、 应该具有统一的基于规则引擎的实时、准实时、批量风险侦测。</p>
+<p>7、 应该具有统一的信息外送处理。</p>
+</blockquote>
+<p>通过这些目标，我们将它需要具备的功能梳理如下：</p>
+<blockquote>
+<p>1、 反欺诈业务处理：告警管理、案件调查、交易控制、侦测处理。</p>
+<p>2、 反欺诈运营管理：运营管控、流程管理、策略管理。</p>
+<p>3、 反欺诈数据报表：数据整合、数据报告。</p>
+<p>4、 反欺诈模型研究：规划研究、变量加工、贴源数据。</p>
+<p>5、 反欺诈行为分析：行为分析、关联分析、评级计算、批量处理。</p>
+</blockquote>
+<p>基于前面的要求，我们来梳理一下与反欺诈有关的上下文关系，如下图：</p>
+<p><img src="./pic/160705.jpg" alt></p>
+<p>图中蓝色线是交易访问关系，橙色线是批量数据访问关系，通过这些关系，我们再来细化梳理一下它们在应用架构中的位置：</p>
+<p><img src="./pic/160706.jpg" alt></p>
+<p>再把它们在数据架构中的位置也梳理出来：</p>
+<p><img src="./pic/160707.jpg" alt></p>
+<p>现在，我们可以梳理一下反欺诈的具体处理流程了。渠道层的处理流程梳理如下：</p>
+<p><img src="./pic/160708.jpg" alt></p>
+<p>产品层的处理流程梳理如下：</p>
+<p><img src="./pic/160709.jpg" alt></p>
+<p>客户层的处理流程梳理如下：</p>
+<p>[<img src="./pic/160710.jpg" alt></p>
+<p>在这些处理流程中，对于需要加强认证的行为，需要将该次交易列入风险监控列表中，经事后人工确认确实存在欺诈行为的，将此类行为列入风险行为模型中，完成欺诈侦测随着欺诈行为的变异而不断进化。</p>
+<p>好了，到这里我们反欺诈设计的主体部分就算设计完成了，这是在企业级架构中逻辑各层已解耦的前提下进行的设计，分阶段分层各司其职分而治之，通过建立行为模型灵活应对用户的各种行为，适应现在与未来，对于那些新出现的欺诈手段，主动学习并生成欺诈行为模型，将可有效杜绝现在与未来可能发生的欺诈。</p>
+<p>通过反欺诈设计的这个过程，我们可以总结几招识别一家互联网金融公司是否具备反欺诈能力的小技巧：</p>
+<blockquote>
+<p>1、 将您的帐户在其它手机上登陆，测试渠道层反欺诈能力；</p>
+<p>2、 将您的帐户在异地登陆，测试渠道层反欺诈能力；</p>
+<p>3、 修改您的登陆密码，测试产品层反欺诈能力；</p>
+<p>4、 修改您的支付密码，测试产品层反欺诈能力：</p>
+<p>5、 修改身份信息，测试客户层反欺诈能力；</p>
+<p>6、 绑定新的银行卡，测试产品层反欺诈能力；</p>
+<p>7、 用新卡提现，测试交易反欺诈能力；</p>
+<p>8、 用他人手机提现，测试交易反欺诈能力；</p>
+<p>9、 异地全额提现，测试交易反欺诈能力；</p>
+</blockquote>
+<p>进行以上任意一步操作，如果有收到短信提醒，说明有帐户异常行为识别机制；如果有收到短信验证码，说明有帐户行为控制机制；如果收到电话确认，说明有用户身份真伪识别。如果只有短信提醒，请谨慎使用，如果都没有，立刻马上提现并卸载。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大数据/" rel="tag"># 大数据</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/03/160703_HBase官方文档之Region/" rel="next" title="HBase官方文档之Region">
+                <i class="fa fa-chevron-left"></i> HBase官方文档之Region
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/17/160817_Hadoop集群坏境搭建配置/" rel="prev" title="Hadoop集群坏境搭建配置">
+                Hadoop集群坏境搭建配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhuangzhouzhishui</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuangzhouzhishui</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

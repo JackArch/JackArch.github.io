@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ETL是BI项目最重要的一个环节，通常情况下ETL会花掉整个项目的1/3的时间，ETL设计的好坏直接关接到BI项目的成败。ETL也是一个长期的过程，只有不断的发现问题并解决问题，才能使ETL运行效率更高，为项目后期开发提供准确的数据。  　　ETL的设计分三部分：数据抽取、数据的清洗转换、数据的加载。在设计ETL的时候也是从这三部分出发。数据的抽取是从各个不同的数据源抽取到ODS中(这个过程也可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ETL设计详解">
+<meta property="og:url" content="http://JackArch.github.io/2015/12/23/151223_ETL设计详解 /index.html">
+<meta property="og:site_name" content="Deep  |  Mind">
+<meta property="og:description" content="ETL是BI项目最重要的一个环节，通常情况下ETL会花掉整个项目的1/3的时间，ETL设计的好坏直接关接到BI项目的成败。ETL也是一个长期的过程，只有不断的发现问题并解决问题，才能使ETL运行效率更高，为项目后期开发提供准确的数据。  　　ETL的设计分三部分：数据抽取、数据的清洗转换、数据的加载。在设计ETL的时候也是从这三部分出发。数据的抽取是从各个不同的数据源抽取到ODS中(这个过程也可以">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-18T20:25:05.546Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ETL设计详解">
+<meta name="twitter:description" content="ETL是BI项目最重要的一个环节，通常情况下ETL会花掉整个项目的1/3的时间，ETL设计的好坏直接关接到BI项目的成败。ETL也是一个长期的过程，只有不断的发现问题并解决问题，才能使ETL运行效率更高，为项目后期开发提供准确的数据。  　　ETL的设计分三部分：数据抽取、数据的清洗转换、数据的加载。在设计ETL的时候也是从这三部分出发。数据的抽取是从各个不同的数据源抽取到ODS中(这个过程也可以">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://JackArch.github.io/2015/12/23/151223_ETL设计详解 /">
+
+
+
+
+
+  <title>ETL设计详解 | Deep  |  Mind</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep  |  Mind</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://JackArch.github.io/2015/12/23/151223_ETL设计详解 /">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhuangzhouzhishui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep  |  Mind">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ETL设计详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-23T12:38:17+08:00">
+                2015-12-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ETL是BI项目最重要的一个环节，通常情况下ETL会花掉整个项目的1/3的时间，ETL设计的好坏直接关接到BI项目的成败。ETL也是一个长期的过程，只有不断的发现问题并解决问题，才能使ETL运行效率更高，为项目后期开发提供准确的数据。</p>
+<p> 　　ETL的设计分三部分：数据抽取、数据的清洗转换、数据的加载。在设计ETL的时候也是从这三部分出发。数据的抽取是从各个不同的数据源抽取到ODS中(这个过程也可以做一些数据的清洗和转换)，在抽取的过程中需要挑选不同的抽取方法，尽可能的提高ETL的运行效率。ETL三个部分中，花费时间最长的是T(清洗、转换)的部分，一般情况下这部分工作量是整个ETL的2/3。数据的加载一般在数据清洗完了之后直接写入DW(Data Warehouse)中去。</p>
+<p> 　　ETL的实现有多种方法，常用的有三种，第一种是借助ETL工具如Oracle的OWB、SQL server 2000的DTS、SQL Server2005的SSIS服务、informatic等实现，第二种是SQL方式实现，第三种是ETL工具和SQL相结合。前两种方法各有优缺点，借助工具可以快速的建立起ETL工程，屏蔽复杂的编码任务，提高速度，降低难度，但是欠缺灵活性。SQL的方法优点是灵活，提高ETL运行效率，但是编码复杂，对技术要求比较高。第三种是综合了前面二种的优点，极大的提高ETL的开发速度和效率。</p>
+<p> 　　<strong>数据的抽取</strong></p>
+<p> 　　数据的抽取需要在调研阶段做大量工作，首先要搞清楚以下几个问题：数据是从几个业务系统中来？各个业务系统的数据库<a href="http://product.yesky.com/service/" target="_blank" rel="noopener">服务器</a>运行什么DBMS？是否存在手工数据，手工数据量有多大？是否存在非结构化的数据？等等类似问题，当收集完这些信息之后才可以进行数据抽取的设计。</p>
+<p> 　　<strong>1、与存放DW的数据库系统相同的数据源处理方法</strong></p>
+<p> 　　这一类数源在设计比较容易，一般情况下，DBMS(包括SQLServer，Oracle)都会提供数据库链接功能，在DW数据库服务器和原业务系统之间建立直接的链接关系就可以写Select 语句直接访问。</p>
+<p> 　　<strong>2、与DW数据库系统不同的数据源的处理方法。</strong></p>
+<p> 　　这一类数据源一般情况下也可以通过ODBC的方式建立数据库链接，如SQL Server和Oracle之间。如果不能建立数据库链接，可以有两种方式完成，一种是通过工具将源数据导出成.txt或者是.xls文件，然后再将这些源系统文件导入到ODS中。另外一种方法通过程序接口来完成。</p>
+<p> 　　<strong>3、对于文件类型数据源</strong>(.txt,，xls)，可以培训业务人员利用数据库工具将这些数据导入到指定的数据库，然后从指定的数据库抽取。或者可以借助工具实现，如SQL SERVER 2005 的SSIS服务的平面数据源和平面目标等组件导入ODS中去。</p>
+<p> 　　<strong>4、增量更新问题</strong></p>
+<p> 　　对于数据量大的系统，必须考虑增量抽取。一般情况，业务系统会记录业务发生的时间，可以用作增量的标志，每次抽取之前首先判断ODS中记录最大的时间，然后根据这个时间去业务系统取大于这个时间的所有记录。利用业务系统的时间戳，一般情况下，业务系统没有或者部分有时间戳。</p>
+<p> 　　<strong>数据的清洗转换</strong></p>
+<p> 　　一般情况下，数据仓库分为ODS、DW两部分，通常的做法是从业务系统到ODS做清洗，将脏数据和不完整数据过滤掉，再从ODS到DW的过程中转换，进行一些业务规则的计算和聚合。</p>
+<p> 　　<strong>1、数据清洗</strong></p>
+<p> 　　数据清洗的任务是过滤那些不符合要求的数据，将过滤的结果交给业务主管部门，确认是否过滤掉还是由业务单位修正之后再进行抽取。不符合要求的数据主要是有不完整的数据、错误的数据和重复的数据三大类。</p>
+<p> 　　A、不完整的数据，其特征是是一些应该有的信息缺失，如供应商的名称，分公司的名称，客户的区域信息缺失、业务系统中主表与明细表不能匹配等。需要将这一类数据过滤出来，按缺失的内容分别写入不同Excel文件向客户提交，要求在规定的时间内补全。补全后才写入数据仓库。</p>
+<p> 　　B、错误的数据，产生原因是业务系统不够健全，在接收输入后没有进行判断直接写入后台数据库造成的，比如数值数据输成全角数字字符、字符串数据后面有一个回车、日期格式不正确、日期越界等。这一类数据也要分类，对于类似于全角字符、数据前后有不面见字符的问题只能写SQL的方式找出来，然后要求客户在业务系统修正之后抽取;日期格式不正确的或者是日期越界的这一类错误会导致ETL运行失败，这一类错误需要去业务系统数据库用SQL的方式挑出来，交给业务主管部门要求限期修正，修正之后再抽取。</p>
+<p> 　　C、重复的数据，特别是维表中比较常见，将重复的数据的记录所有字段导出来，让客户确认并整理。</p>
+<p> 　　数据清洗是一个反复的过程，不可能在几天内完成，只有不断的发现问题，解决问题。对于是否过滤、是否修正一般要求客户确认;对于过滤掉的数据，写入Excel文件或者将过滤数据写入数据表，在ETL开发的初期可以每天向业务单位发送过滤数据的邮件，促使他们尽快的修正错误，同时也可以作为将来验证数据的依据。数据清洗需要注意的是不要将有用的数据过滤掉了，对于每个过滤规则认真进行验证，并要用户确认才行。</p>
+<p> 　　<strong>2、数据转换</strong></p>
+<p> 　　数据转换的任务主要是进行不一致的数据转换、数据粒度的转换和一些<a href="http://search.yesky.com/search.do?wd=%C9%CC%CE%F1" target="_blank" rel="noopener">商务</a>规则的计算。</p>
+<p> 　　A、不一致数据转换，这个过程是一个整合的过程，将不同业务系统的相同类型的数据统一，比如同一个供应商在结算系统的编码是XX0001，而在CRM中编码是YY0001，这样在抽取过来之后统一转换成一个编码。</p>
+<p> 　　B、数据粒度的转换，业务系统一般存储非常明细的数据，而数据仓库中的数据是用来分析的，不需要非常明细的数据，一般情况下，会将业务系统数据按照数据仓库粒度进行聚合。</p>
+<p> 　　C、商务规则的计算，不同的企业有不同的业务规则，不同的数据指标，这些指标有的时候不是简单的加加减减就能完成，这个时候需要在ETL中将这些数据指标计算好了之后存储在数据仓库中，供分析使用。</p>
+<p> 　　<strong>ETL日志与警告发送</strong></p>
+<p> 　　1、ETL日志，记录日志的目的是随时可以知道ETL运行情况，如果出错了，出错在那里。</p>
+<p> 　　ETL日志分为三类。第一类是执行过程日志，是在ETL执行过程中每执行一步的记录，记录每次运行每一步骤的起始时间，影响了多少行数据，流水账形式。第二类是错误日志，当某个模块出错的时候需要写错误日志，记录每次出错的时间，出错的模块以及出错的信息等。第三类日志是总体日志，只记录ETL开始时间，结束时间是否成功信息。</p>
+<p> 　　如果使用ETL工具，工具会自动产生一些日志，这一类日志也可以作为ETL日志的一部分。</p>
+<p> 　　2、警告发送</p>
+<p> 　　ETL出错了，不仅要写ETL出错日志而且要向系统管理员发送警告，发送警告的方式有多种，常用的就是给系统管理员发送邮件，并附上出错的信息，方便管理员排查错误。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/09/151109_大数据算法题/" rel="next" title="大数据算法题">
+                <i class="fa fa-chevron-left"></i> 大数据算法题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/27/151227_大数据组件原理总结/" rel="prev" title="大数据组件原理总结">
+                大数据组件原理总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhuangzhouzhishui</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuangzhouzhishui</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

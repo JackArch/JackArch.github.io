@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Hadoop集群坏境搭建配置前言 关于时下最热的技术潮流，无疑大数据是首当其中最热的一个技术点，关于大数据的概念和方法论铺天盖地的到处宣扬，但其实很多公司或者技术人员也不能详细的讲解其真正的含义或者就没找到能被落地实施的可行性方案，更有很多数据相关的项目比如弄几张报表，写几个T-SQL语句就被冠以“大数据项目”，当然了，时下热门的话题嘛，先把“大数据”帽子扣上，这样才能显示出项目的高大上，得到公司">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop集群坏境搭建配置">
+<meta property="og:url" content="http://JackArch.github.io/2016/08/17/160817_Hadoop集群坏境搭建配置/index.html">
+<meta property="og:site_name" content="Deep  |  Mind">
+<meta property="og:description" content="Hadoop集群坏境搭建配置前言 关于时下最热的技术潮流，无疑大数据是首当其中最热的一个技术点，关于大数据的概念和方法论铺天盖地的到处宣扬，但其实很多公司或者技术人员也不能详细的讲解其真正的含义或者就没找到能被落地实施的可行性方案，更有很多数据相关的项目比如弄几张报表，写几个T-SQL语句就被冠以“大数据项目”，当然了，时下热门的话题嘛，先把“大数据”帽子扣上，这样才能显示出项目的高大上，得到公司">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://jackarch.github.io/2016/08/17/160817_Hadoop集群坏境搭建配置/pic/160801.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/08/17/160817_Hadoop集群坏境搭建配置/pic/160802.jpg">
+<meta property="og:image" content="http://jackarch.github.io/2016/08/17/160817_Hadoop集群坏境搭建配置/pic/160803.jpg">
+<meta property="og:updated_time" content="2019-06-19T03:29:07.031Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop集群坏境搭建配置">
+<meta name="twitter:description" content="Hadoop集群坏境搭建配置前言 关于时下最热的技术潮流，无疑大数据是首当其中最热的一个技术点，关于大数据的概念和方法论铺天盖地的到处宣扬，但其实很多公司或者技术人员也不能详细的讲解其真正的含义或者就没找到能被落地实施的可行性方案，更有很多数据相关的项目比如弄几张报表，写几个T-SQL语句就被冠以“大数据项目”，当然了，时下热门的话题嘛，先把“大数据”帽子扣上，这样才能显示出项目的高大上，得到公司">
+<meta name="twitter:image" content="http://jackarch.github.io/2016/08/17/160817_Hadoop集群坏境搭建配置/pic/160801.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://JackArch.github.io/2016/08/17/160817_Hadoop集群坏境搭建配置/">
+
+
+
+
+
+  <title>Hadoop集群坏境搭建配置 | Deep  |  Mind</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep  |  Mind</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://JackArch.github.io/2016/08/17/160817_Hadoop集群坏境搭建配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhuangzhouzhishui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep  |  Mind">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hadoop集群坏境搭建配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-17T16:35:42+08:00">
+                2016-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Hadoop集群坏境搭建配置"><a href="#Hadoop集群坏境搭建配置" class="headerlink" title="Hadoop集群坏境搭建配置"></a>Hadoop集群坏境搭建配置</h2><p><strong>前言</strong></p>
+<p>关于时下最热的技术潮流，无疑大数据是首当其中最热的一个技术点，关于大数据的概念和方法论铺天盖地的到处宣扬，但其实很多公司或者技术人员也不能详细的讲解其真正的含义或者就没找到能被落地实施的可行性方案，更有很多数据相关的项目比如弄几张报表，写几个T-SQL语句就被冠以“<strong>大数据项目</strong>”，当然了，时下热门的话题嘛，先把“大数据”帽子扣上，这样才能显示出项目的高大上，得到公司的重视或者高层领导的关注。</p>
+<p>首先，关于大数据的概念或者架构一直在各方争议的背景下持续的存在着。目前，关于大数据项目可以真正被落地实施的解决方案就是：Hadoop为核心的的一些列开源分布式解决方案。</p>
+<p>其次，本系列，我们不讲一些抽象的方法论或者概念性的东西，我将实际的跟大家分享一个真正的大数据解决方案将如何被落地实施。包括与其相关的的配套开源系统：Hive、Spark、Sqoop、Hue、Zookeeper、Kafka等诸多产品的搭建。</p>
+<p>再次、关于大数据的生态圈每一个产品都有着强大的技术背景做支撑。所以，本系列我们重点放在如何搭建和使用等诸多技术实施点上，不扯太虚的东西。</p>
+<p><strong>技术准备</strong></p>
+<p>进入本篇的正题，本篇我们主要来分析如何来搭建一个Hadoop集群环境，其实Hadoop的搭建分为三种形式：单机模式、伪分布模式、完全分布模式，关于这三种模式其实都是扯淡，只要掌握了完全分布模式，也就是集群模式的搭建，剩下的两种模式自然而然就会用了，一般前两种模式一般用在开发或测试环境下，Hadoop最大的优势就是分布式集群计算，所以在生产环境下都是搭建的最后一种模式：完全分布模式。</p>
+<p>所以，本篇我们来讲解Hadoop集群环境的搭建。</p>
+<p>一般，当公司要开始搭建Hadoop集群的时候，需要考虑一下技术点：</p>
+<p><strong>一、硬件的选择</strong></p>
+<p>首先，关于Hadoop集群环境硬件的选择，无非就是围绕几个面去选择：</p>
+<p><strong>1、需要搭建集群包含几个节点（Node）?</strong></p>
+<p>​     关于这个问题，引入的要考虑的点就是需要搭建几个Server环境，因为在分布式环境中，一个服务器（Server）就是一个节点，所以在选择节点的问题上是需要参照参照当前集群所要应用的业务场景来决定了，当然，在分布式集群环境中节点越多所带来的就是整个集群性能的提升，同样也也就意味着带来了成本的增高。</p>
+<p>​    但是，关于Hadoop集群有一个最低的节点量供大家参考。</p>
+<p>​    首先，在一个Hadoop集群环境中，NameNode,SecondaryNameNode和DataNode是需要分配不同的节点上的，所以至少有三个节点来当然这些角色。这也就意味至少需要有三台服务器。当然，在Hadoop运行作业完成的时候，还需要另外一个角色History Server来记录历史程序的运行情况，建议是将这个角色用独立的一台服务器来运行。</p>
+<p>​    所以，在一个最简单的Hadoop分布式集群中至少需要三台服务器来构建：</p>
+<ul>
+<li><ul>
+<li>第一台用来记录所有的数据分布情况，运行的进程就是NameNode</li>
+<li>第二台用来备份所有数据分布情况，毕竟当前面的那台服务器宕机的时候，还可以通过该服务器来恢复数据。所以，该服务器运行的程序就是SecondaryNameNode</li>
+<li>第三台用来存储实际的数据，运行的进程就是DataNode</li>
+<li>第四台是可选的服务器用来记录应用程序历史的运行状况。运行的程序就是History Server了。</li>
+</ul>
+</li>
+</ul>
+<p><strong>2、集群环境中各个服务里该如何选择配置?</strong></p>
+<p>​     其实这个问题就是配置选型的问题，关于配置无非就是内存、CPU、存储等如何选择，当然，在公司预算允许的情况下，配置越高越好，关于这些个问题在搭建Hadoop环境的时候，需要从以下几个点来考虑。</p>
+<p>​     首先，关于集群中的几个节点是根据角色的划分有侧重点进行配置的，并不是要求所有的服务器都弄一样的配置，在Hadoop集群环境中，最重要的就是NameNode运行的服务器了，因为它扮演的角色是整个集群的调度和协调工作，当然在这个角色中还有一个最重要的进程是资源管理（ResourceManager），它才是真正的协调整个集群中每个节点的运行。所以这个服务器的配置要高于其它节点。</p>
+<p>​     其次，在Hadoop集群运行的过程是需要将所有的数据分布记录拉入到内存中的，所以这就意味着当整个集群的数据越来越大，我们知道在大数据的环境下，几TB级别或者PB级别的数据是很常见的，这也就意味这个数据分布记录也要增大，所以需要加大内存，这里有一个参考依据：</p>
+<p>一般1GB内存可以管理百万个block文件。</p>
+<p>举例：bolck为128M,副本为3个，200台集群，4TB数据，需要的Namenode内存为：200（服务器数）x 4194304MB(4TB数据) / (128MB x 3)=2184533.33个文件=2.18百万个文件，所以内存值也就接近于2.2G了。</p>
+<p>​    再次，因为这里有有一台机器用来做备份，所以secondary namenode需要的内存与namenode需要的内存大概一样，然后就是从节点的各台服务器需要的内存量了，这里也有一个参考依据：</p>
+<ul>
+<li><ul>
+<li>首先计算当前CPU的虚拟核数（Vcore）:虚拟核数（Vcore）=CPU个数<em>单CPU合数</em>HT(超线程数）</li>
+<li>然后根据虚拟核数配置内存容量：内存容量=虚拟核数（Vcore）*2GB（至少2GB）</li>
+</ul>
+</li>
+</ul>
+<p>​    关于CPU的选择，因为Hadoop为分布式计算运算，所以其运行模型基本是密集型并行计算，所以推荐的CPU要尽量选择多路多核的，条件允许的话每个节点都要如此。</p>
+<p>​    然后，在一个大型的分布式集群中，还需要注意的是，因为分布式的计算，需要各个节点间进行频繁的通信和IO操作，这也就意味对网络带宽有要求，所以推荐使用千兆以上的网卡，条件允许可以万兆网卡，交换机亦如此。</p>
+<p><strong>3、集群环境中每个节点存储大小如何配置？需要引入什么raid？</strong></p>
+<p>​     首先先来谈一下关于raid的问题，之前因为raid的目的就是为了防止数据丢失而做的存储层数据备份机制，现在最佳的使用场景是单台服务这种高风险的配置，然后再分布式集群中，所存储的数据是分布式存放到各个数据节点上的（DataNode）,并且Hadoop应用已经默认实现了数据的备份，所以raid在分布式系统中是没有多大作用的，然并卵！其实，究其原理很简单，集群中单节点的数据备份在出现意外宕机的情况下基本是无法恢复出有效数据的。</p>
+<p>然后我们再来分析一下关于存储的问题，可以明确一点的就是：数据量的大小决定了集群整体的存储大小，同样也决定了整个集群的规模！</p>
+<p>来举个例子：</p>
+<p>假如我们当前可以确定的存量数据量有1TB，然后每天大约增长10GB的数据量，那么当前集群未来<strong>一年之内</strong>集群存储大小计算方式为：</p>
+<p>（1TB+10GB<em>365天）</em>3*1.3=17.8TB</p>
+<p>可以看出，这个集群的规模一年就得大约需要18T的存储空间，这里解释一下计算的公式，括号外面的乘以3指的是当前数据为了防止丢失自己所做的冗余备份，默认是一份数据拷贝三份存储于不同的服务器上，然后后面乘以1.3的目的是作为节点的操作系统或者计算的临时结果预留空间。</p>
+<p>然后，我们接着计算节点数：</p>
+<p>节点数（Nodes）=18TB/2TB=9</p>
+<p>上面的计算公式除以2TB的假设是每个节点有2TB的存储空间，这里根据集群的存储大小可以计算出整个集群的数据存储节点数：9个。</p>
+<p>所以需要的总结点数：总结点数=9（数据存储节点）+2（NameNode和SecondaryNameNode）=11个。</p>
+<p>到此，就需要搭建11个服务器来运行集群了。</p>
+<p><strong>二、软件的选择</strong></p>
+<p>关于Hadoop集群环境软件的选择，无非就是围绕这个几个软件产品去选择：OS操作系统，Hadoop版本，JDK版本，Hive版本、MySQL版本等。</p>
+<p><strong>1、操作系统该选择哪款？</strong></p>
+<p>Hadoop产品是由Java语言开发的，所以推荐的是Linux操作系统，理由很简单开源免费，就一个免费这个理由就足以PK掉微软的操作系统，因为我们知道集群环境是需要很多台服务器的，所以如果用微软的服务器成本会高很多，当然，其实在大数据开源的产品中基本找不到微软的影子，所以从这一点来讲，微软已经拉下了很多，甚至已经在落寞！</p>
+<p>所以，在开源的Linux操作系统中又是百花齐放，各种版本，各位朋友可以自行网上查阅各个版本的区别和优越性，这里我就直接告诉大家我推荐的操作系统CentOS.</p>
+<p>如下照抄自博友虾皮的简介：</p>
+<p>CentOS是一个基于<strong>Red Hat 企业级 Linux</strong> 提供的可自由使用的<strong>源代码企业级</strong>的 Linux 发行版本。<strong>每个版本</strong>的 <strong>CentOS</strong> 都会获得<strong>七年</strong>的<strong>支持</strong>（通过安全更新方式）。<strong>新</strong>版本的 <strong>CentOS</strong> 每<strong>两年</strong>发行一次，而每个版本的 CentOS 会定期（大概每六个月）更新一次，以便支持新的硬件。这样，建立一个安全、低维护、稳定、高预测性、高重复性的 Linux 环境。</p>
+<p>　<strong>CentOS特点</strong> </p>
+<ul>
+<li>可以把<strong>CentOS</strong>理解为Red Hat AS系列！它完全就是对Red Hat AS进行改进后发布的！各种操作、使用和RED HAT没有区别！</li>
+<li>CentOS完全免费，不存在RED HAT AS4需要序列号的问题。</li>
+<li>CentOS<strong>独有</strong>的<strong>yum</strong>命令支持在线升级，可以即时更新系统，不像RED HAT那样需要花钱购买支持服务！</li>
+<li>CentOS修正了许多RED HAT AS的BUG！</li>
+<li>CentOS版本说明： CentOS3.1 等同于 RED HAT AS3 Update1 CentOS3.4 等同于 RED HAT AS3 Update4 CentOS4.0 等同于 RED HAT AS4。</li>
+</ul>
+<p>好了，我相信以上这些理由足以征服你了。</p>
+<p> <strong>2、Hadoop版本选择的问题？</strong></p>
+<p>关于Hadoop历史版本变迁过程中，出现了很多版本，有兴趣的童鞋可以自行查阅，这里我只从大的方向把Hadoop版本劈成2个，这里暂称Hadoop1.0和Hadoop2.0，截止我写本文章的时候，Hadoop2.0版本已经相当稳定，并且逐渐在企业应用中大面积推广而来，关于这两个版本我就不去过多的介绍，网友可以自行查阅，或者参考我之前的一篇关于两个版本的架构比较。</p>
+<p>所以，本系列内容我应用的版本就是基于Hadoop2.0这个系列来进行讲解。</p>
+<p>而关于Jdk版本的问题是和Hadoop的版本相匹配的，其它相关产品后续我们会分析，当然也大家可以自行从Hadoop官网上去查询，这里不赘述。</p>
+<p><strong>操作系统</strong></p>
+<p>为了方便演示，我会使用虚拟机跟大家讲解，当然，有兴趣的童鞋也可以自行下载虚拟机跟随我一步步来搭建这个平台，这里我选择的虚拟机为：VMware。</p>
+<p>大家网上下载安装就可以了，过程很简单，没啥需要讲解的，当然你的PC配置是需要好一点的，至少8G以上，要不基本玩转不了虚拟机。</p>
+<p><img src="./pic/160801.jpg" alt="img"></p>
+<p>安装完成就是上面的样子了，相关资料大家网上查阅吧，这里就不在赘述。</p>
+<p>然后，我们进行Liunx操作系统的安装，上面已经说过，我们选择的是CentOS操作，所以需要到CentOS官网进行下载安装就行，记住了：不用怕，不花钱！</p>
+<p>　　<strong>官方网站与文档</strong>  </p>
+<blockquote>
+<p>官方主页： <a href="http://www.centos.org/" target="_blank" rel="noopener">http://www.centos.org/</a></p>
+<p>官方Wiki： <a href="http://wiki.centos.org/" target="_blank" rel="noopener">http://wiki.centos.org/</a></p>
+<p>官方中文文档 ：<a href="http://wiki.centos.org/zh/Documentation" target="_blank" rel="noopener">http://wiki.centos.org/zh/Documentation</a></p>
+<p>安装说明： <a href="http://www.centos.org/docs/" target="_blank" rel="noopener">http://www.centos.org/docs/</a></p>
+</blockquote>
+<p>这里在选择CentOS版本的时候需要记住了，如果不是公司要求，尽量不要选择最新的，而是要选择最稳定的，原因很简单，谁也不要当新版本的小白鼠。</p>
+<p><img src="./pic/160802.jpg" alt="img"></p>
+<p>然后选择要下载的稳定版本，这里我推荐选择CentOS6.8 64位操作系统。</p>
+<p><img src="./pic/160803.jpg" alt="img"></p>
+<p>然后，点击找到下载包下载就行。</p>
+<p>在安装各个节点之前，我们需要提前准备好相关节点的配置信息，比如计算机名、IP地址、安装角色、超级管理员账户信息，内存分配、存储等，所以我列举了一个表格供大家参考：</p>
+<table>
+<thead>
+<tr>
+<th><strong>机器名称</strong></th>
+<th><strong>IP地址</strong></th>
+<th><strong>角色</strong></th>
+<th><strong>OS</strong></th>
+<th><strong>最高管理员名称（Name）</strong></th>
+<th><strong>最高管理员密码（PWD）</strong></th>
+<th><strong>一般用户名称（Name）</strong></th>
+<th><strong>一般用户密码（PWD）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Master.Hadoop</td>
+<td>192.168.1.50</td>
+<td>Master</td>
+<td>CentOS6.8</td>
+<td>root</td>
+<td>password01!</td>
+<td>hadoop</td>
+<td>password01!</td>
+</tr>
+<tr>
+<td>Salve01.Hadoop</td>
+<td>192.168.1.51</td>
+<td>Salve1</td>
+<td>CentOS6.8</td>
+<td>root</td>
+<td>password01!</td>
+<td>hadoop</td>
+<td>password01!</td>
+</tr>
+<tr>
+<td>Salve02.Hadoop</td>
+<td>192.168.1.52</td>
+<td>Salve2</td>
+<td>CentOS6.8</td>
+<td>root</td>
+<td>password01!</td>
+<td>hadoop</td>
+<td>password01!</td>
+</tr>
+<tr>
+<td>Salve03.Hadoop</td>
+<td>192.168.1.53</td>
+<td>Salve3</td>
+<td>CentOS6.8</td>
+<td>root</td>
+<td>password01!</td>
+<td>hadoop</td>
+<td>password01!</td>
+</tr>
+<tr>
+<td>MySQLServer01</td>
+<td>102.168.1.100</td>
+<td>MySQLServer</td>
+<td>Ubuntu</td>
+<td>root</td>
+<td>password01!</td>
+<td>hadoop</td>
+<td>password01!</td>
+</tr>
+<tr>
+<td>MySQLServer02</td>
+<td>102.168.1.101</td>
+<td>MySQLServer</td>
+<td>Ubuntu</td>
+<td>root</td>
+<td>password01!</td>
+<td>hadoop</td>
+<td>password01!</td>
+</tr>
+</tbody></table>
+<p>大家可以看到，这里先提前规划处四台服务器用来搭建Hadoop集群，然后分别为其分配了机器名称、IP,IP需要设置为统一网段，然后为了搭建我们的Hadoop集群，我们需要为所有集群中的节点创建一个独立的用户，这里我起了一个名字，就叫做Hadoop，当然为了方便记忆我统一的将所有的密码设置为password01!.</p>
+<p>当然，这里我们提前配置好内存和存储，因为我们知道我们使用的虚拟机这些信息是可以根据使用的情况，进行动态调整的。</p>
+<p>另外，我又搭建了两台Ubuntu的服务器来单独安装MySQLServer，搭建了一个主从模式，我们知道Ubuntu是一个界面友好的操作系统，这里和Hadoop集群分离的目的是因为Mysql数据库是比较占内存资源的，所以我们单独机器来安装，当然，MySQL并不是Hadoop集群所需要的，两者没有必然的关系，这里搭建它的目的就为了后续安装Hive来分析数据应用的，并且我们可以在这个机器里进行开发调试，当然Window平台也可以，毕竟我们使用Windows平台是最熟练的。</p>
+<p><strong>结语</strong></p>
+<p>本篇主要介绍了搭建一个Hadoop大数据集群需要提前准备的内容和一些注意项，关于开源的大数据产品生态链是非常的庞大，所以我们将花费很多的时间在应用的使用场景上，但是其最底层的支撑框架就是Hadoop的Yarn计算模型和HDFS分布式文件存储系统。</p>
+<p>通过该篇的介绍，多少也需要知道自己需要掌握的技术点：比如Linux操作系统的运维和操作、MySQL关系型数据应用和管理、Java开发的基础知识等诸多门槛。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/22/160722_基于大数据的银行反欺诈的分析报告/" rel="next" title="基于大数据的银行反欺诈的分析报告">
+                <i class="fa fa-chevron-left"></i> 基于大数据的银行反欺诈的分析报告
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/22/160822_Hadoop集群坏境CentoOS安装/" rel="prev" title="Hadoop集群坏境CentOS安装">
+                Hadoop集群坏境CentOS安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhuangzhouzhishui</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop集群坏境搭建配置"><span class="nav-number">1.</span> <span class="nav-text">Hadoop集群坏境搭建配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuangzhouzhishui</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
