@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="alg,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="12345678910111213141516171819202122232425262728293031//一种是用递归的方法，另一种是用堆栈的方法：//首先创建一棵树：public class Node &amp;#123;    private int data;    private Node leftNode;    private Node rightNode;    public Node(">
+<meta name="keywords" content="alg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树遍历01_java">
+<meta property="og:url" content="http://JackArch.github.io/2019/06/24/二叉树遍历01-java/index.html">
+<meta property="og:site_name" content="Deep  |  Mind">
+<meta property="og:description" content="12345678910111213141516171819202122232425262728293031//一种是用递归的方法，另一种是用堆栈的方法：//首先创建一棵树：public class Node &amp;#123;    private int data;    private Node leftNode;    private Node rightNode;    public Node(">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-24T14:16:45.888Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二叉树遍历01_java">
+<meta name="twitter:description" content="12345678910111213141516171819202122232425262728293031//一种是用递归的方法，另一种是用堆栈的方法：//首先创建一棵树：public class Node &amp;#123;    private int data;    private Node leftNode;    private Node rightNode;    public Node(">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://JackArch.github.io/2019/06/24/二叉树遍历01-java/">
+
+
+
+
+
+  <title>二叉树遍历01_java | Deep  |  Mind</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep  |  Mind</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://JackArch.github.io/2019/06/24/二叉树遍历01-java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhuangzhouzhishui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep  |  Mind">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">二叉树遍历01_java</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-24T22:12:06+08:00">
+                2019-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一种是用递归的方法，另一种是用堆栈的方法：</span></span><br><span class="line"><span class="comment">//首先创建一棵树：</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> data;</span><br><span class="line">    <span class="keyword">private</span> Node leftNode;</span><br><span class="line">    <span class="keyword">private</span> Node rightNode;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> data, Node leftNode, Node rightNode)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">        <span class="keyword">this</span>.leftNode = leftNode;</span><br><span class="line">        <span class="keyword">this</span>.rightNode = rightNode;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(<span class="keyword">int</span> data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">getLeftNode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> leftNode;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLeftNode</span><span class="params">(Node leftNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.leftNode = leftNode;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">getRightNode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> rightNode;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRightNode</span><span class="params">(Node rightNode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.rightNode = rightNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//递归：</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinaryTree</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> yaobo</span></span><br><span class="line"><span class="comment">     * 二叉树的先序中序后序排序</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">init</span><span class="params">()</span> </span>&#123;<span class="comment">//注意必须逆序建立，先建立子节点，再逆序往上建立，因为非叶子结点会使用到下面的节点，而初始化是按顺序初始化的，不逆序建立会报错</span></span><br><span class="line">        Node J = <span class="keyword">new</span> Node(<span class="number">8</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        Node H = <span class="keyword">new</span> Node(<span class="number">4</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        Node G = <span class="keyword">new</span> Node(<span class="number">2</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        Node F = <span class="keyword">new</span> Node(<span class="number">7</span>, <span class="keyword">null</span>, J);</span><br><span class="line">        Node E = <span class="keyword">new</span> Node(<span class="number">5</span>, H, <span class="keyword">null</span>);</span><br><span class="line">        Node D = <span class="keyword">new</span> Node(<span class="number">1</span>, <span class="keyword">null</span>, G);</span><br><span class="line">        Node C = <span class="keyword">new</span> Node(<span class="number">9</span>, F, <span class="keyword">null</span>);</span><br><span class="line">        Node B = <span class="keyword">new</span> Node(<span class="number">3</span>, D, E);</span><br><span class="line">        Node A = <span class="keyword">new</span> Node(<span class="number">6</span>, B, C);</span><br><span class="line">        <span class="keyword">return</span> A;   <span class="comment">//返回根节点</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printNode</span><span class="params">(Node node)</span></span>&#123;</span><br><span class="line">        System.out.print(node.getData());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">theFirstTraversal</span><span class="params">(Node root)</span> </span>&#123;  <span class="comment">//先序遍历</span></span><br><span class="line">        printNode(root);</span><br><span class="line">        <span class="keyword">if</span> (root.getLeftNode() != <span class="keyword">null</span>) &#123;  <span class="comment">//使用递归进行遍历左孩子</span></span><br><span class="line">            theFirstTraversal(root.getLeftNode());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (root.getRightNode() != <span class="keyword">null</span>) &#123;  <span class="comment">//递归遍历右孩子</span></span><br><span class="line">            theFirstTraversal(root.getRightNode());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">theInOrderTraversal</span><span class="params">(Node root)</span> </span>&#123;  <span class="comment">//中序遍历</span></span><br><span class="line">        <span class="keyword">if</span> (root.getLeftNode() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            theInOrderTraversal(root.getLeftNode());</span><br><span class="line">        &#125;</span><br><span class="line">        printNode(root);</span><br><span class="line">        <span class="keyword">if</span> (root.getRightNode() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            theInOrderTraversal(root.getRightNode());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">thePostOrderTraversal</span><span class="params">(Node root)</span> </span>&#123;  <span class="comment">//后序遍历</span></span><br><span class="line">        <span class="keyword">if</span> (root.getLeftNode() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            thePostOrderTraversal(root.getLeftNode());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(root.getRightNode() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            thePostOrderTraversal(root.getRightNode());</span><br><span class="line">        &#125;</span><br><span class="line">        printNode(root);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        BinaryTree tree = <span class="keyword">new</span> BinaryTree();</span><br><span class="line">        Node root = tree.init();</span><br><span class="line">        System.out.println(<span class="string">"先序遍历"</span>);</span><br><span class="line">        tree.theFirstTraversal(root);</span><br><span class="line">        System.out.println(<span class="string">""</span>);</span><br><span class="line">        System.out.println(<span class="string">"中序遍历"</span>);</span><br><span class="line">        tree.theInOrderTraversal(root);</span><br><span class="line">        System.out.println(<span class="string">""</span>);</span><br><span class="line">        System.out.println(<span class="string">"后序遍历"</span>);</span><br><span class="line">        tree.thePostOrderTraversal(root);</span><br><span class="line">        System.out.println(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//堆栈：</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinaryTree_scan_01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">init</span><span class="params">()</span> </span>&#123;<span class="comment">//注意必须逆序建立，先建立子节点，再逆序往上建立，因为非叶子结点会使用到下面的节点，而初始化是按顺序初始化的，不逆序建立会报错</span></span><br><span class="line">        Node J = <span class="keyword">new</span> Node(<span class="number">8</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        Node H = <span class="keyword">new</span> Node(<span class="number">4</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        Node G = <span class="keyword">new</span> Node(<span class="number">2</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        Node F = <span class="keyword">new</span> Node(<span class="number">7</span>, <span class="keyword">null</span>, J);</span><br><span class="line">        Node E = <span class="keyword">new</span> Node(<span class="number">5</span>, H, <span class="keyword">null</span>);</span><br><span class="line">        Node D = <span class="keyword">new</span> Node(<span class="number">1</span>, <span class="keyword">null</span>, G);</span><br><span class="line">        Node C = <span class="keyword">new</span> Node(<span class="number">9</span>, F, <span class="keyword">null</span>);</span><br><span class="line">        Node B = <span class="keyword">new</span> Node(<span class="number">3</span>, D, E);</span><br><span class="line">        Node A = <span class="keyword">new</span> Node(<span class="number">6</span>, B, C);</span><br><span class="line">        <span class="keyword">return</span> A;   <span class="comment">//返回根节点</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printNode</span><span class="params">(Node node)</span></span>&#123;</span><br><span class="line">        System.out.print(node.getData());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">theFirstTraversal_Stack</span><span class="params">(Node root)</span> </span>&#123;  <span class="comment">//先序遍历</span></span><br><span class="line">        Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;Node&gt;();</span><br><span class="line">        Node node = root;</span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span> || stack.size() &gt; <span class="number">0</span>) &#123;  <span class="comment">//将所有左孩子压栈</span></span><br><span class="line">            <span class="keyword">if</span> (node != <span class="keyword">null</span>) &#123;   <span class="comment">//压栈之前先访问</span></span><br><span class="line">                printNode(node);</span><br><span class="line">                stack.push(node);</span><br><span class="line">                node = node.getLeftNode();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                node = stack.pop();</span><br><span class="line">                node = node.getRightNode();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">theInOrderTraversal_Stack</span><span class="params">(Node root)</span> </span>&#123;  <span class="comment">//中序遍历</span></span><br><span class="line">        Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;Node&gt;();</span><br><span class="line">        Node node = root;</span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span> || stack.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">                stack.push(node);   <span class="comment">//直接压栈</span></span><br><span class="line">                node = node.getLeftNode();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                node = stack.pop(); <span class="comment">//出栈并访问</span></span><br><span class="line">                printNode(node);</span><br><span class="line">                node = node.getRightNode();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">thePostOrderTraversal_Stack</span><span class="params">(Node root)</span> </span>&#123;   <span class="comment">//后序遍历</span></span><br><span class="line">        Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;Node&gt;();</span><br><span class="line">        Stack&lt;Node&gt; output = <span class="keyword">new</span> Stack&lt;Node&gt;();<span class="comment">//构造一个中间栈来存储逆后序遍历的结果</span></span><br><span class="line">        Node node = root;</span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span> || stack.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">                output.push(node);</span><br><span class="line">                stack.push(node);</span><br><span class="line">                node = node.getRightNode();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                node = stack.pop();</span><br><span class="line">                node = node.getLeftNode();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(output.size());</span><br><span class="line">        <span class="keyword">while</span> (output.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">            printNode(output.pop());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        BinaryTree_scan_01 tree = <span class="keyword">new</span> BinaryTree_scan_01();</span><br><span class="line">        Node root = tree.init();</span><br><span class="line">        System.out.println(<span class="string">"先序遍历"</span>);</span><br><span class="line">        tree.theFirstTraversal_Stack(root);</span><br><span class="line">        System.out.println(<span class="string">""</span>);</span><br><span class="line">        System.out.println(<span class="string">"中序遍历"</span>);</span><br><span class="line">        tree.theInOrderTraversal_Stack(root);</span><br><span class="line">        System.out.println(<span class="string">""</span>);</span><br><span class="line">        System.out.println(<span class="string">"后序遍历"</span>);</span><br><span class="line">        tree.thePostOrderTraversal_Stack(root);</span><br><span class="line">        System.out.println(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 功能：把一个数组的值存入二叉树中，然后进行3种方式的遍历.</span></span><br><span class="line"><span class="comment"> * 构造的二叉树：</span></span><br><span class="line"><span class="comment"> *               1</span></span><br><span class="line"><span class="comment"> *             /   \</span></span><br><span class="line"><span class="comment"> *            2     3</span></span><br><span class="line"><span class="comment"> *           / \   / \</span></span><br><span class="line"><span class="comment"> *          4   5  6  7</span></span><br><span class="line"><span class="comment"> *         / \</span></span><br><span class="line"><span class="comment"> *        8   9</span></span><br><span class="line"><span class="comment"> *  先序遍历：DLR</span></span><br><span class="line"><span class="comment"> *  1 2 4 8 9 5 3 6 7</span></span><br><span class="line"><span class="comment"> *  中序遍历：LDR</span></span><br><span class="line"><span class="comment"> *  8 4 2 9 5 1 6 3 7</span></span><br><span class="line"><span class="comment"> *  后序遍历：LRD</span></span><br><span class="line"><span class="comment"> *  8 9 4 5 2 6 7 3 1</span></span><br><span class="line"><span class="comment"> *  深度优先遍历</span></span><br><span class="line"><span class="comment"> *  1 2 4 8 9 5 3 6 7</span></span><br><span class="line"><span class="comment"> *  广度优先遍历</span></span><br><span class="line"><span class="comment"> *  1 2 3 4 5 6 7 8 9</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>  Peter.Qiu</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>  [Version NO, 2015年4月2日]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>  [Related classes/methods]</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>  [product/module version]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinaryTree_scan_02</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] array = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;Node&gt; nodeList = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 内部类：节点</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">        Node leftChild;</span><br><span class="line">        Node rightChild;</span><br><span class="line">        <span class="keyword">int</span> data;</span><br><span class="line"></span><br><span class="line">        Node(<span class="keyword">int</span> newData) &#123;</span><br><span class="line">            leftChild = <span class="keyword">null</span>;</span><br><span class="line">            rightChild = <span class="keyword">null</span>;</span><br><span class="line">            data = newData;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 二叉树的每个结点至多仅仅有二棵子树(不存在度大于2的结点)，二叉树的子树有左右之分，次序不能颠倒。</span></span><br><span class="line"><span class="comment">     &lt;BR&gt;</span></span><br><span class="line"><span class="comment">     * 二叉树的第i层至多有2^&#123;i-1&#125;个结点。深度为k的二叉树至多有2^k-1个结点；&lt;BR&gt;</span></span><br><span class="line"><span class="comment">     * 对不论什么一棵二叉树T，假设其终端结点数为n_0，度为2的结点数为n_2。则n_0=n_2+1。&lt;BR&gt;</span></span><br><span class="line"><span class="comment">     *一棵深度为k，且有2^k-1个节点称之为满二叉树；深度为k，有n个节点的二叉树，&lt;BR&gt;</span></span><br><span class="line"><span class="comment">     *当且仅当其每个节点都与深度为k的满二叉树中，序号为1至n的节点相应时。称之为全然二叉树.&lt;BR&gt;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span>  Peter.Qiu [Parameters description]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void [Return type description]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span> throws [Exception] [Exception description]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> [Related classes#Related methods#Related properties]</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createTree</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        nodeList = <span class="keyword">new</span> LinkedList&lt;Node&gt;();</span><br><span class="line">        <span class="comment">// 将一个数组的值依次转换为Node节点</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> nodeIndex = <span class="number">0</span>; nodeIndex &lt; array.length; nodeIndex++) &#123;</span><br><span class="line">            nodeList.add(<span class="keyword">new</span> Node(array[nodeIndex]));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 对前lastParentIndex-1个父节点依照父节点与孩子节点的数字关系建立二叉树</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> parentIndex = <span class="number">0</span>; parentIndex &lt; array.length / <span class="number">2</span> - <span class="number">1</span>; parentIndex++) &#123;</span><br><span class="line">            <span class="comment">// 左孩子</span></span><br><span class="line">            nodeList.get(parentIndex).leftChild = nodeList</span><br><span class="line">                    .get(parentIndex * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">            <span class="comment">// 右孩子</span></span><br><span class="line">            nodeList.get(parentIndex).rightChild = nodeList</span><br><span class="line">                    .get(parentIndex * <span class="number">2</span> + <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最后一个父节点:由于最后一个父节点可能没有右孩子，所以单独拿出来处理</span></span><br><span class="line">        <span class="keyword">int</span> lastParentIndex = array.length / <span class="number">2</span> - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 左孩子</span></span><br><span class="line">        nodeList.get(lastParentIndex).leftChild = nodeList</span><br><span class="line">                .get(lastParentIndex * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 右孩子,假设数组的长度为奇数才建立右孩子</span></span><br><span class="line">        <span class="keyword">if</span> (array.length % <span class="number">2</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            nodeList.get(lastParentIndex).rightChild = nodeList</span><br><span class="line">                    .get(lastParentIndex * <span class="number">2</span> + <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 先序遍历</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 这三种不同的遍历结构都是一样的，仅仅是先后顺序不一样而已</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> node</span></span><br><span class="line"><span class="comment">     *            遍历的节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">preOrderTraverse</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        System.out.print(node.data + <span class="string">" "</span>);</span><br><span class="line">        preOrderTraverse(node.leftChild);</span><br><span class="line">        preOrderTraverse(node.rightChild);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 中序遍历</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 这三种不同的遍历结构都是一样的，仅仅是先后顺序不一样而已</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> node</span></span><br><span class="line"><span class="comment">     *            遍历的节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">inOrderTraverse</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        inOrderTraverse(node.leftChild);</span><br><span class="line">        System.out.print(node.data + <span class="string">" "</span>);</span><br><span class="line">        inOrderTraverse(node.rightChild);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 后序遍历</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 这三种不同的遍历结构都是一样的。仅仅是先后顺序不一样而已</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> node</span></span><br><span class="line"><span class="comment">     *            遍历的节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">postOrderTraverse</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        postOrderTraverse(node.leftChild);</span><br><span class="line">        postOrderTraverse(node.rightChild);</span><br><span class="line">        System.out.print(node.data + <span class="string">" "</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 深度优先遍历，相当于先根遍历</span></span><br><span class="line"><span class="comment">     * 採用非递归实现</span></span><br><span class="line"><span class="comment">     * 须要辅助数据结构：栈</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">depthOrderTraversal</span><span class="params">(Node root)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"\n深度优先遍历"</span>);</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</span><br><span class="line">            System.out.println(<span class="string">"empty tree"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ArrayDeque&lt;Node&gt; stack=<span class="keyword">new</span> ArrayDeque&lt;Node&gt;();</span><br><span class="line">        stack.push(root);</span><br><span class="line">        <span class="keyword">while</span>(stack.isEmpty()==<span class="keyword">false</span>)&#123;</span><br><span class="line">            Node node=stack.pop();</span><br><span class="line">            System.out.print(node.data+ <span class="string">" "</span>);</span><br><span class="line">            <span class="keyword">if</span>(node.rightChild!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                stack.push(node.rightChild);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(node.leftChild!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                stack.push(node.leftChild);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 广度优先遍历</span></span><br><span class="line"><span class="comment">     * 採用非递归实现</span></span><br><span class="line"><span class="comment">     * 须要辅助数据结构：队列</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">levelOrderTraversal</span><span class="params">(Node root)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"广度优先遍历"</span>);</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</span><br><span class="line">            System.out.println(<span class="string">"empty tree"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ArrayDeque&lt;Node&gt; queue=<span class="keyword">new</span> ArrayDeque&lt;Node&gt;();</span><br><span class="line">        queue.add(root);</span><br><span class="line">        <span class="keyword">while</span>(queue.isEmpty()==<span class="keyword">false</span>)&#123;</span><br><span class="line">            Node node=queue.remove();</span><br><span class="line">            System.out.print(node.data+ <span class="string">" "</span>);</span><br><span class="line">            <span class="keyword">if</span>(node.leftChild!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                queue.add(node.leftChild);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(node.rightChild!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                queue.add(node.rightChild);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *构造的二叉树：</span></span><br><span class="line"><span class="comment">     *               1</span></span><br><span class="line"><span class="comment">     *             /   \</span></span><br><span class="line"><span class="comment">     *            2     3</span></span><br><span class="line"><span class="comment">     *           / \   / \</span></span><br><span class="line"><span class="comment">     *          4   5  6  7</span></span><br><span class="line"><span class="comment">     *         / \</span></span><br><span class="line"><span class="comment">     *        8   9</span></span><br><span class="line"><span class="comment">     *  先序遍历：DLR</span></span><br><span class="line"><span class="comment">     *  1 2 4 8 9 5 3 6 7</span></span><br><span class="line"><span class="comment">     *  中序遍历：LDR</span></span><br><span class="line"><span class="comment">     *  8 4 2 9 5 1 6 3 7</span></span><br><span class="line"><span class="comment">     *  后序遍历：LRD</span></span><br><span class="line"><span class="comment">     *  8 9 4 5 2 6 7 3 1</span></span><br><span class="line"><span class="comment">     *  深度优先遍历</span></span><br><span class="line"><span class="comment">     *  1 2 4 8 9 5 3 6 7</span></span><br><span class="line"><span class="comment">     *  广度优先遍历</span></span><br><span class="line"><span class="comment">     *  1 2 3 4 5 6 7 8 9</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        BinaryTree_scan_02 binTree = <span class="keyword">new</span> BinaryTree_scan_02();</span><br><span class="line">        binTree.createTree();</span><br><span class="line">        <span class="comment">// nodeList中第0个索引处的值即为根节点</span></span><br><span class="line">        Node root = nodeList.get(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"先序遍历："</span>);</span><br><span class="line">        binTree.preOrderTraverse(root);</span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"中序遍历："</span>);<span class="comment">//LDR</span></span><br><span class="line">        binTree.inOrderTraverse(root);</span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"后序遍历："</span>);<span class="comment">//LRD</span></span><br><span class="line">        binTree.postOrderTraverse(root);</span><br><span class="line"></span><br><span class="line">        binTree.depthOrderTraversal(root);<span class="comment">//深度遍历</span></span><br><span class="line">        binTree.levelOrderTraversal(root);<span class="comment">//广度遍历</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/alg/" rel="tag"># alg</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/24/二叉树-Python/" rel="next" title="二叉树_Python">
+                <i class="fa fa-chevron-left"></i> 二叉树_Python
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/24/二叉树遍历02-java/" rel="prev" title="二叉树遍历02_java">
+                二叉树遍历02_java <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhuangzhouzhishui</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuangzhouzhishui</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
